@@ -5,7 +5,6 @@ import io
 import json
 import re
 from html import escape
-from urllib.parse import quote_plus
 
 import altair as alt
 from bs4 import BeautifulSoup
@@ -42,6 +41,29 @@ STORE_META = {
 DIRECT_PRODUCT_URLS = {
     ("Glenfiddich 12YO", "BWS"): "https://bws.com.au/product/17621/glenfiddich-12-year-old-single-malt-scotch-whisky-700ml",
 }
+
+PRODUCT_URL_PATTERNS = {
+    "BWS": [r"/product/"],
+    "Dan Murphy's": [r"/product/"],
+    "Liquorland": [r"/product/"],
+    "First Choice": [r"/product/"],
+}
+
+
+def looks_like_search_or_category_url(url: str) -> bool:
+    u = (url or "").lower()
+    return any(token in u for token in ["?search=", "/search", "/spirits/whisky", "/whisky/all", "/list/"])
+
+
+def is_verified_product_url(store: str, url: str) -> bool:
+    if not url:
+        return False
+    if looks_like_search_or_category_url(url):
+        return False
+    for pat in PRODUCT_URL_PATTERNS.get(store, []):
+        if re.search(pat, url, flags=re.I):
+            return True
+    return False
 
 
 def inject_css() -> None:
@@ -168,18 +190,6 @@ def fetch_html(url: str) -> str:
     return resp.text
 
 
-def build_search_url(store: str, whisky: str) -> str:
-    q = quote_plus(whisky)
-    if store == "Dan Murphy's":
-        return f"https://www.danmurphys.com.au/whisky/all?search={q}"
-    if store == "BWS":
-        return f"https://bws.com.au/spirits/whisky?search={q}"
-    if store == "Liquorland":
-        return f"https://www.liquorland.com.au/spirits/whisky?search={q}"
-    if store == "First Choice":
-        return f"https://www.firstchoiceliquor.com.au/spirits/whisky?search={q}"
-    return ""
-
 
 def json_ld_prices(soup: BeautifulSoup) -> list[float]:
     prices: list[float] = []
@@ -274,11 +284,20 @@ def extract_live_price(row: pd.Series, html: str) -> float | None:
     return vals[0] if vals else None
 
 
-def resolved_product_url(row: pd.Series) -> str:
-    direct = DIRECT_PRODUCT_URLS.get((str(row.get("whisky", "")), str(row.get("store", ""))))
+def resolved_product_url(row: pd.Series, require_verified: bool = True) -> str | None:
+    whisky = str(row.get("whisky", ""))
+    store = str(row.get("store", ""))
+    direct = DIRECT_PRODUCT_URLS.get((whisky, store))
     if direct:
         return direct
-    return str(row.get("product_url") or build_search_url(str(row.get("store", "")), str(row.get("whisky", ""))))
+
+    existing = str(row.get("product_url") or "").strip()
+    if is_verified_product_url(store, existing):
+        return existing
+
+    if require_verified:
+        return None
+    return STORE_META.get(store, {}).get("url")
 
 
 def refresh_live_prices(df: pd.DataFrame) -> tuple[pd.DataFrame, list[str]]:
@@ -286,22 +305,29 @@ def refresh_live_prices(df: pd.DataFrame) -> tuple[pd.DataFrame, list[str]]:
     messages: list[str] = []
     updated = 0
     for idx, row in refreshed.iterrows():
-        url = resolved_product_url(row)
+        url = resolved_product_url(row, require_verified=True)
+        if not url:
+            messages.append(f"No verified product URL for {row['whisky']} at {row['store']}")
+            refreshed.at[idx, "live_status"] = "no_verified_url"
+            continue
         try:
             html = fetch_html(url)
             price = extract_live_price(row, html)
             if price is None:
-                messages.append(f"No live price found for {row['whisky']} at {row['store']}")
+                messages.append(f"Could not parse live price for {row['whisky']} at {row['store']}")
+                refreshed.at[idx, "live_status"] = "parse_failed"
                 continue
             refreshed.at[idx, "price_aud"] = float(price)
             refreshed.at[idx, "product_url"] = url
             refreshed.at[idx, "last_seen"] = pd.Timestamp.utcnow().strftime("%Y-%m-%d %H:%M UTC")
             refreshed.at[idx, "source"] = "live_page_refresh"
+            refreshed.at[idx, "live_status"] = "live_ok"
             updated += 1
         except Exception as e:
+            refreshed.at[idx, "live_status"] = "request_failed"
             messages.append(f"Skipped {row['whisky']} at {row['store']}: {type(e).__name__}")
     refreshed = normalize_prices(refreshed)
-    messages.insert(0, f"Updated {updated} row(s) from retailer pages.")
+    messages.insert(0, f"Updated {updated} row(s) from verified retailer product pages.")
     return refreshed, messages
 
 
@@ -332,7 +358,7 @@ def normalize_prices(df: pd.DataFrame) -> pd.DataFrame:
     expected = {
         "rank_au": None, "whisky": "", "expression": "", "brand": "", "style": "", "age": "", "abv": "",
         "size_ml": 700, "store": "", "state": "AU", "price_aud": 0.0, "in_stock": True, "product_url": "",
-        "store_url": "", "last_seen": "", "source": "manual", "popularity_group": "",
+        "store_url": "", "last_seen": "", "source": "manual", "popularity_group": "", "live_status": "starter_data",
     }
     for col, default in expected.items():
         if col not in df.columns:
@@ -415,7 +441,9 @@ def best_deal_card(best_row: pd.Series) -> None:
         """,
         unsafe_allow_html=True,
     )
-    st.link_button("Open deal ↗", resolved_product_url(best_row), use_container_width=True)
+    best_link = resolved_product_url(best_row, require_verified=False)
+    if best_link:
+        st.link_button("Open deal ↗", best_link, use_container_width=True)
 
 
 def store_jump_row() -> None:
@@ -432,10 +460,19 @@ def store_jump_row() -> None:
 
 
 def store_offer_card(row: pd.Series, best_price: float) -> None:
-    link = resolved_product_url(row)
+    link = resolved_product_url(row, require_verified=True)
     chip_color = STORE_COLORS.get(row["store"], "#475569")
     best_class = " best" if abs(float(row["price_aud"]) - float(best_price)) < 0.001 else ""
     stock = "In stock" if bool(row["in_stock"]) else "Availability unknown"
+    live_status = str(row.get("live_status", "starter_data"))
+    status_label = {
+        "live_ok": "Verified live",
+        "starter_data": "Starter data",
+        "no_verified_url": "No verified URL",
+        "parse_failed": "Live parse failed",
+        "request_failed": "Live request failed",
+    }.get(live_status, "Starter data")
+    link_html = f"<a class='offer-link' href='{escape(link, quote=True)}' target='_blank'>Open verified product page ↗</a>" if link else "<div class='offer-link' style='color:#94a3b8;text-decoration:none;cursor:default'>No verified product link</div>"
     st.markdown(
         f"""
         <div class='offer-card{best_class}'>
@@ -449,10 +486,11 @@ def store_offer_card(row: pd.Series, best_price: float) -> None:
                 <span class='pill'>{stock}</span>
                 <span class='pill'>{int(row['size_ml'])}mL</span>
                 <span class='pill'>Seen {escape(str(row['last_seen']))}</span>
+                <span class='pill'>{escape(status_label)}</span>
             </div>
             <div style='margin-top:1rem;color:#e5e7eb;font-weight:700'>{escape(str(row['whisky']))}</div>
             <div class='muted'>{escape(str(row['brand']))} • {escape(str(row['style']))}</div>
-            <a class='offer-link' href='{escape(link, quote=True)}' target='_blank'>Open store listing ↗</a>
+            {link_html}
         </div>
         """,
         unsafe_allow_html=True,
@@ -516,7 +554,7 @@ def main() -> None:
     with r1:
         do_refresh = st.button("Refresh live rates", use_container_width=True)
     with r2:
-        st.markdown("<div class='data-note'>This uses live retailer page parsing where possible. For some bottles, direct product URLs are used to improve accuracy over search pages. Results can still vary by postcode, member pricing, stock, and temporary promos.</div></div>", unsafe_allow_html=True)
+        st.markdown("<div class='data-note'>Live refresh only uses verified product pages. It will not guess from retailer search results anymore, which avoids wrong links and wrong prices but means some rows may stay on starter data until you add an exact product URL.</div></div>", unsafe_allow_html=True)
 
     if do_refresh:
         to_refresh = current_df.copy()
@@ -563,6 +601,7 @@ def main() -> None:
         st.stop()
 
     board = leaderboard(filtered)
+    board["verified_product_url"] = board.apply(lambda r: resolved_product_url(r, require_verified=True), axis=1)
     compare = comparison_table(filtered)
     if focus_whisky not in filtered["whisky"].unique():
         focus_whisky = board["whisky"].iloc[0]
@@ -599,13 +638,13 @@ def main() -> None:
                 show_board,
                 use_container_width=True,
                 hide_index=True,
-                column_order=["rank_au", "whisky", "brand", "style", "best_store", "best_price", "best_per_100ml", "product_url"],
+                column_order=["rank_au", "whisky", "brand", "style", "best_store", "best_price", "best_per_100ml", "verified_product_url"],
                 column_config={
                     "rank_au": st.column_config.NumberColumn("AU rank", format="%d"),
                     "best_store": "Cheapest store",
                     "best_price": st.column_config.NumberColumn("Best price", format="$%.2f"),
                     "best_per_100ml": st.column_config.NumberColumn("Best / 100mL", format="$%.2f"),
-                    "product_url": st.column_config.LinkColumn("Store link", display_text="Open"),
+                    "verified_product_url": st.column_config.LinkColumn("Verified product link", display_text="Open"),
                 },
             )
         with right:
@@ -637,7 +676,8 @@ def main() -> None:
                 "spread": st.column_config.NumberColumn("Spread", format="$%.2f"),
             },
         )
-        export_df = filtered[["rank_au", "whisky", "expression", "brand", "style", "store", "size_ml", "price_aud", "price_per_100ml", "in_stock", "product_url", "store_url", "last_seen"]].sort_values(["rank_au", "price_aud"])
+        export_df = filtered[["rank_au", "whisky", "expression", "brand", "style", "store", "size_ml", "price_aud", "price_per_100ml", "in_stock", "product_url", "store_url", "last_seen", "live_status"]].sort_values(["rank_au", "price_aud"]).copy()
+        export_df["verified_product_url"] = export_df.apply(lambda r: resolved_product_url(r, require_verified=True), axis=1)
         d1, d2 = st.columns(2)
         with d1:
             st.download_button("Download filtered rows as CSV", data=export_df.to_csv(index=False).encode("utf-8"), file_name="boozedeals_filtered.csv", mime="text/csv", use_container_width=True)
@@ -663,7 +703,7 @@ def main() -> None:
 
     with st.expander("About live-rate accuracy"):
         st.markdown("""
-        Live refresh is best-effort. Where a direct product URL is known, the app uses that page first because it is usually more accurate than retailer search pages.
+        Live refresh now only uses verified product pages. It does not fall back to retailer search results for price scraping, because that was causing wrong links and wrong prices.
 
         I also corrected the bundled starter data issue you spotted: Glenfiddich 12YO at BWS is set to **A$106** and this build includes a direct BWS product URL override for that bottle.
         """)
