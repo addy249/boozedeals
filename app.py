@@ -239,8 +239,8 @@ def extract_live_price(row: pd.Series, html: str) -> float | None:
         return ld[0]
 
     # 3) site scripts with price keys
-    script_text = "
-".join(s.get_text(" ", strip=True) for s in soup.find_all("script"))
+    script_text = "\n".join(s.get_text(" ", strip=True) for s in soup.find_all("script"))
+
     for pat in [r'"price"\s*:\s*"?([0-9]{1,4}(?:\.[0-9]{2})?)', r'"salePrice"\s*:\s*"?([0-9]{1,4}(?:\.[0-9]{2})?)']:
         m = re.search(pat, script_text)
         if m:
@@ -251,8 +251,8 @@ def extract_live_price(row: pd.Series, html: str) -> float | None:
     # 4) text window near the product title
     for tag in soup(["script", "style", "noscript"]):
         tag.extract()
-    text = soup.get_text("
-", strip=True)
+    text = soup.get_text("\n", strip=True)
+
     lines = [ln.strip() for ln in text.splitlines() if ln.strip()]
     nlines = [_norm(ln) for ln in lines]
     tokens = [t for t in _norm(row.get("whisky", "")).split() if len(t) > 2 and t not in {"whisky", "scotch", "single", "malt", "blended", "year", "old", "yo"}]
