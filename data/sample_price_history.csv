@@ -1,16 +1,1001 @@
 whisky,store,price_aud,checked_at
-Glenfiddich 12,Dan Murphy's,79.95,2026-03-20
-Glenfiddich 12,Dan Murphy's,77.95,2026-03-24
-Glenfiddich 12,Dan Murphy's,74.95,2026-03-31
-Glenfiddich 12,BWS,109.00,2026-03-20
-Glenfiddich 12,BWS,107.00,2026-03-24
-Glenfiddich 12,BWS,106.00,2026-03-31
-The Macallan 12,Dan Murphy's,149.95,2026-03-20
-The Macallan 12,Dan Murphy's,144.95,2026-03-24
-The Macallan 12,Dan Murphy's,139.95,2026-03-31
-The Macallan 12,BWS,145.00,2026-03-20
-The Macallan 12,BWS,142.00,2026-03-24
-The Macallan 12,BWS,140.00,2026-03-31
-Ardbeg 10,Dan Murphy's,119.95,2026-03-20
-Ardbeg 10,Dan Murphy's,117.95,2026-03-24
-Ardbeg 10,Dan Murphy's,114.95,2026-03-31
+Johnnie Walker Red Label,Dan Murphy's,50.96,2026-02-01
+Johnnie Walker Red Label,Dan Murphy's,47.98,2026-02-15
+Johnnie Walker Red Label,Dan Murphy's,48.49,2026-03-01
+Johnnie Walker Red Label,Dan Murphy's,49.0,2026-03-15
+Johnnie Walker Red Label,Dan Murphy's,48.0,2026-03-31
+Johnnie Walker Red Label,BWS,51.98,2026-02-01
+Johnnie Walker Red Label,BWS,50.0,2026-02-15
+Johnnie Walker Red Label,BWS,50.51,2026-03-01
+Johnnie Walker Red Label,BWS,48.02,2026-03-15
+Johnnie Walker Red Label,BWS,51.02,2026-03-31
+Johnnie Walker Red Label,Liquorland,52.41,2026-02-01
+Johnnie Walker Red Label,Liquorland,51.44,2026-02-15
+Johnnie Walker Red Label,Liquorland,49.95,2026-03-01
+Johnnie Walker Red Label,Liquorland,48.47,2026-03-15
+Johnnie Walker Red Label,Liquorland,46.47,2026-03-31
+Johnnie Walker Red Label,First Choice,49.39,2026-02-01
+Johnnie Walker Red Label,First Choice,46.44,2026-02-15
+Johnnie Walker Red Label,First Choice,46.96,2026-03-01
+Johnnie Walker Red Label,First Choice,48.49,2026-03-15
+Johnnie Walker Red Label,First Choice,45.49,2026-03-31
+Johnnie Walker Black Label 12YO,Dan Murphy's,59.28,2026-02-01
+Johnnie Walker Black Label 12YO,Dan Murphy's,56.14,2026-02-15
+Johnnie Walker Black Label 12YO,Dan Murphy's,55.57,2026-03-01
+Johnnie Walker Black Label 12YO,Dan Murphy's,57.0,2026-03-15
+Johnnie Walker Black Label 12YO,Dan Murphy's,55.0,2026-03-31
+Johnnie Walker Black Label 12YO,BWS,61.09,2026-02-01
+Johnnie Walker Black Label 12YO,BWS,56.96,2026-02-15
+Johnnie Walker Black Label 12YO,BWS,55.39,2026-03-01
+Johnnie Walker Black Label 12YO,BWS,56.82,2026-03-15
+Johnnie Walker Black Label 12YO,BWS,54.82,2026-03-31
+Johnnie Walker Black Label 12YO,Liquorland,65.24,2026-02-01
+Johnnie Walker Black Label 12YO,Liquorland,61.01,2026-02-15
+Johnnie Walker Black Label 12YO,Liquorland,62.39,2026-03-01
+Johnnie Walker Black Label 12YO,Liquorland,63.77,2026-03-15
+Johnnie Walker Black Label 12YO,Liquorland,62.77,2026-03-31
+Johnnie Walker Black Label 12YO,First Choice,60.93,2026-02-01
+Johnnie Walker Black Label 12YO,First Choice,61.76,2026-02-15
+Johnnie Walker Black Label 12YO,First Choice,58.18,2026-03-01
+Johnnie Walker Black Label 12YO,First Choice,56.59,2026-03-15
+Johnnie Walker Black Label 12YO,First Choice,60.59,2026-03-31
+Johnnie Walker Double Black,Dan Murphy's,67.64,2026-02-01
+Johnnie Walker Double Black,Dan Murphy's,65.32,2026-02-15
+Johnnie Walker Double Black,Dan Murphy's,65.66,2026-03-01
+Johnnie Walker Double Black,Dan Murphy's,66.0,2026-03-15
+Johnnie Walker Double Black,Dan Murphy's,64.0,2026-03-31
+Johnnie Walker Double Black,BWS,67.33,2026-02-01
+Johnnie Walker Double Black,BWS,66.01,2026-02-15
+Johnnie Walker Double Black,BWS,66.36,2026-03-01
+Johnnie Walker Double Black,BWS,65.7,2026-03-15
+Johnnie Walker Double Black,BWS,67.7,2026-03-31
+Johnnie Walker Double Black,Liquorland,67.59,2026-02-01
+Johnnie Walker Double Black,Liquorland,67.27,2026-02-15
+Johnnie Walker Double Black,Liquorland,67.61,2026-03-01
+Johnnie Walker Double Black,Liquorland,67.95,2026-03-15
+Johnnie Walker Double Black,Liquorland,64.95,2026-03-31
+Johnnie Walker Double Black,First Choice,70.36,2026-02-01
+Johnnie Walker Double Black,First Choice,69.0,2026-02-15
+Johnnie Walker Double Black,First Choice,66.33,2026-03-01
+Johnnie Walker Double Black,First Choice,67.65,2026-03-15
+Johnnie Walker Double Black,First Choice,65.65,2026-03-31
+Johnnie Walker Green Label 15YO,Dan Murphy's,98.88,2026-02-01
+Johnnie Walker Green Label 15YO,Dan Murphy's,96.94,2026-02-15
+Johnnie Walker Green Label 15YO,Dan Murphy's,99.97,2026-03-01
+Johnnie Walker Green Label 15YO,Dan Murphy's,99.0,2026-03-15
+Johnnie Walker Green Label 15YO,Dan Murphy's,96.0,2026-03-31
+Johnnie Walker Green Label 15YO,BWS,96.74,2026-02-01
+Johnnie Walker Green Label 15YO,BWS,93.92,2026-02-15
+Johnnie Walker Green Label 15YO,BWS,91.01,2026-03-01
+Johnnie Walker Green Label 15YO,BWS,92.1,2026-03-15
+Johnnie Walker Green Label 15YO,BWS,89.1,2026-03-31
+Johnnie Walker Green Label 15YO,Liquorland,100.68,2026-02-01
+Johnnie Walker Green Label 15YO,Liquorland,98.77,2026-02-15
+Johnnie Walker Green Label 15YO,Liquorland,98.81,2026-03-01
+Johnnie Walker Green Label 15YO,Liquorland,96.85,2026-03-15
+Johnnie Walker Green Label 15YO,Liquorland,97.85,2026-03-31
+Johnnie Walker Green Label 15YO,First Choice,98.75,2026-02-01
+Johnnie Walker Green Label 15YO,First Choice,95.85,2026-02-15
+Johnnie Walker Green Label 15YO,First Choice,94.9,2026-03-01
+Johnnie Walker Green Label 15YO,First Choice,94.95,2026-03-15
+Johnnie Walker Green Label 15YO,First Choice,93.95,2026-03-31
+Chivas Regal 12YO,Dan Murphy's,52.04,2026-02-01
+Chivas Regal 12YO,Dan Murphy's,53.02,2026-02-15
+Chivas Regal 12YO,Dan Murphy's,51.51,2026-03-01
+Chivas Regal 12YO,Dan Murphy's,49.0,2026-03-15
+Chivas Regal 12YO,Dan Murphy's,50.0,2026-03-31
+Chivas Regal 12YO,BWS,53.08,2026-02-01
+Chivas Regal 12YO,BWS,52.02,2026-02-15
+Chivas Regal 12YO,BWS,53.49,2026-03-01
+Chivas Regal 12YO,BWS,53.96,2026-03-15
+Chivas Regal 12YO,BWS,51.96,2026-03-31
+Chivas Regal 12YO,Liquorland,56.82,2026-02-01
+Chivas Regal 12YO,Liquorland,55.69,2026-02-15
+Chivas Regal 12YO,Liquorland,58.13,2026-03-01
+Chivas Regal 12YO,Liquorland,58.56,2026-03-15
+Chivas Regal 12YO,Liquorland,56.56,2026-03-31
+Chivas Regal 12YO,First Choice,58.7,2026-02-01
+Chivas Regal 12YO,First Choice,54.61,2026-02-15
+Chivas Regal 12YO,First Choice,55.07,2026-03-01
+Chivas Regal 12YO,First Choice,52.52,2026-03-15
+Chivas Regal 12YO,First Choice,55.52,2026-03-31
+Chivas Regal 18YO,Dan Murphy's,111.32,2026-02-01
+Chivas Regal 18YO,Dan Murphy's,109.16,2026-02-15
+Chivas Regal 18YO,Dan Murphy's,109.08,2026-03-01
+Chivas Regal 18YO,Dan Murphy's,109.0,2026-03-15
+Chivas Regal 18YO,Dan Murphy's,106.0,2026-03-31
+Chivas Regal 18YO,BWS,113.17,2026-02-01
+Chivas Regal 18YO,BWS,111.0,2026-02-15
+Chivas Regal 18YO,BWS,109.91,2026-03-01
+Chivas Regal 18YO,BWS,110.82,2026-03-15
+Chivas Regal 18YO,BWS,108.82,2026-03-31
+Chivas Regal 18YO,Liquorland,117.84,2026-02-01
+Chivas Regal 18YO,Liquorland,114.56,2026-02-15
+Chivas Regal 18YO,Liquorland,115.41,2026-03-01
+Chivas Regal 18YO,Liquorland,113.27,2026-03-15
+Chivas Regal 18YO,Liquorland,114.27,2026-03-31
+Chivas Regal 18YO,First Choice,112.45,2026-02-01
+Chivas Regal 18YO,First Choice,109.27,2026-02-15
+Chivas Regal 18YO,First Choice,110.18,2026-03-01
+Chivas Regal 18YO,First Choice,110.09,2026-03-15
+Chivas Regal 18YO,First Choice,107.09,2026-03-31
+Glenfiddich 12YO,Dan Murphy's,77.96,2026-02-01
+Glenfiddich 12YO,Dan Murphy's,75.48,2026-02-15
+Glenfiddich 12YO,Dan Murphy's,76.74,2026-03-01
+Glenfiddich 12YO,Dan Murphy's,73.0,2026-03-15
+Glenfiddich 12YO,Dan Murphy's,73.0,2026-03-31
+Glenfiddich 12YO,BWS,75.38,2026-02-01
+Glenfiddich 12YO,BWS,69.97,2026-02-15
+Glenfiddich 12YO,BWS,69.27,2026-03-01
+Glenfiddich 12YO,BWS,70.56,2026-03-15
+Glenfiddich 12YO,BWS,68.56,2026-03-31
+Glenfiddich 12YO,Liquorland,77.17,2026-02-01
+Glenfiddich 12YO,Liquorland,77.66,2026-02-15
+Glenfiddich 12YO,Liquorland,77.91,2026-03-01
+Glenfiddich 12YO,Liquorland,73.16,2026-03-15
+Glenfiddich 12YO,Liquorland,76.16,2026-03-31
+Glenfiddich 12YO,First Choice,72.59,2026-02-01
+Glenfiddich 12YO,First Choice,73.15,2026-02-15
+Glenfiddich 12YO,First Choice,72.44,2026-03-01
+Glenfiddich 12YO,First Choice,70.72,2026-03-15
+Glenfiddich 12YO,First Choice,69.72,2026-03-31
+Glenfiddich 15YO,Dan Murphy's,118.48,2026-02-01
+Glenfiddich 15YO,Dan Murphy's,116.24,2026-02-15
+Glenfiddich 15YO,Dan Murphy's,112.12,2026-03-01
+Glenfiddich 15YO,Dan Murphy's,114.0,2026-03-15
+Glenfiddich 15YO,Dan Murphy's,113.0,2026-03-31
+Glenfiddich 15YO,BWS,109.01,2026-02-01
+Glenfiddich 15YO,BWS,107.92,2026-02-15
+Glenfiddich 15YO,BWS,104.87,2026-03-01
+Glenfiddich 15YO,BWS,104.82,2026-03-15
+Glenfiddich 15YO,BWS,106.82,2026-03-31
+Glenfiddich 15YO,Liquorland,117.84,2026-02-01
+Glenfiddich 15YO,Liquorland,114.56,2026-02-15
+Glenfiddich 15YO,Liquorland,117.41,2026-03-01
+Glenfiddich 15YO,Liquorland,115.27,2026-03-15
+Glenfiddich 15YO,Liquorland,116.27,2026-03-31
+Glenfiddich 15YO,First Choice,113.49,2026-02-01
+Glenfiddich 15YO,First Choice,114.29,2026-02-15
+Glenfiddich 15YO,First Choice,113.19,2026-03-01
+Glenfiddich 15YO,First Choice,112.09,2026-03-15
+Glenfiddich 15YO,First Choice,108.09,2026-03-31
+Glenfiddich 18YO,Dan Murphy's,152.8,2026-02-01
+Glenfiddich 18YO,Dan Murphy's,146.9,2026-02-15
+Glenfiddich 18YO,Dan Murphy's,144.45,2026-03-01
+Glenfiddich 18YO,Dan Murphy's,143.0,2026-03-15
+Glenfiddich 18YO,Dan Murphy's,143.0,2026-03-31
+Glenfiddich 18YO,BWS,144.7,2026-02-01
+Glenfiddich 18YO,BWS,142.9,2026-02-15
+Glenfiddich 18YO,BWS,139.5,2026-03-01
+Glenfiddich 18YO,BWS,141.1,2026-03-15
+Glenfiddich 18YO,BWS,141.1,2026-03-31
+Glenfiddich 18YO,Liquorland,158.36,2026-02-01
+Glenfiddich 18YO,Liquorland,151.36,2026-02-15
+Glenfiddich 18YO,Liquorland,149.85,2026-03-01
+Glenfiddich 18YO,Liquorland,152.35,2026-03-15
+Glenfiddich 18YO,Liquorland,149.35,2026-03-31
+Glenfiddich 18YO,First Choice,153.31,2026-02-01
+Glenfiddich 18YO,First Choice,149.38,2026-02-15
+Glenfiddich 18YO,First Choice,145.91,2026-03-01
+Glenfiddich 18YO,First Choice,147.45,2026-03-15
+Glenfiddich 18YO,First Choice,144.45,2026-03-31
+The Glenlivet Founder's Reserve,Dan Murphy's,80.0,2026-02-01
+The Glenlivet Founder's Reserve,Dan Murphy's,78.5,2026-02-15
+The Glenlivet Founder's Reserve,Dan Murphy's,73.75,2026-03-01
+The Glenlivet Founder's Reserve,Dan Murphy's,77.0,2026-03-15
+The Glenlivet Founder's Reserve,Dan Murphy's,73.0,2026-03-31
+The Glenlivet Founder's Reserve,BWS,79.54,2026-02-01
+The Glenlivet Founder's Reserve,BWS,77.03,2026-02-15
+The Glenlivet Founder's Reserve,BWS,74.28,2026-03-01
+The Glenlivet Founder's Reserve,BWS,75.52,2026-03-15
+The Glenlivet Founder's Reserve,BWS,74.52,2026-03-31
+The Glenlivet Founder's Reserve,Liquorland,80.35,2026-02-01
+The Glenlivet Founder's Reserve,Liquorland,78.78,2026-02-15
+The Glenlivet Founder's Reserve,Liquorland,80.0,2026-03-01
+The Glenlivet Founder's Reserve,Liquorland,79.22,2026-03-15
+The Glenlivet Founder's Reserve,Liquorland,79.22,2026-03-31
+The Glenlivet Founder's Reserve,First Choice,75.73,2026-02-01
+The Glenlivet Founder's Reserve,First Choice,77.23,2026-02-15
+The Glenlivet Founder's Reserve,First Choice,75.49,2026-03-01
+The Glenlivet Founder's Reserve,First Choice,72.74,2026-03-15
+The Glenlivet Founder's Reserve,First Choice,76.74,2026-03-31
+The Glenlivet 12YO,Dan Murphy's,81.16,2026-02-01
+The Glenlivet 12YO,Dan Murphy's,78.58,2026-02-15
+The Glenlivet 12YO,Dan Murphy's,81.79,2026-03-01
+The Glenlivet 12YO,Dan Murphy's,78.0,2026-03-15
+The Glenlivet 12YO,Dan Murphy's,79.0,2026-03-31
+The Glenlivet 12YO,BWS,82.6,2026-02-01
+The Glenlivet 12YO,BWS,81.01,2026-02-15
+The Glenlivet 12YO,BWS,82.21,2026-03-01
+The Glenlivet 12YO,BWS,81.42,2026-03-15
+The Glenlivet 12YO,BWS,78.42,2026-03-31
+The Glenlivet 12YO,Liquorland,80.54,2026-02-01
+The Glenlivet 12YO,Liquorland,81.96,2026-02-15
+The Glenlivet 12YO,Liquorland,78.16,2026-03-01
+The Glenlivet 12YO,Liquorland,80.37,2026-03-15
+The Glenlivet 12YO,Liquorland,79.37,2026-03-31
+The Glenlivet 12YO,First Choice,80.98,2026-02-01
+The Glenlivet 12YO,First Choice,80.39,2026-02-15
+The Glenlivet 12YO,First Choice,81.59,2026-03-01
+The Glenlivet 12YO,First Choice,79.79,2026-03-15
+The Glenlivet 12YO,First Choice,81.79,2026-03-31
+Monkey Shoulder,Dan Murphy's,63.44,2026-02-01
+Monkey Shoulder,Dan Murphy's,63.22,2026-02-15
+Monkey Shoulder,Dan Murphy's,62.61,2026-03-01
+Monkey Shoulder,Dan Murphy's,62.0,2026-03-15
+Monkey Shoulder,Dan Murphy's,59.0,2026-03-31
+Monkey Shoulder,BWS,64.23,2026-02-01
+Monkey Shoulder,BWS,60.04,2026-02-15
+Monkey Shoulder,BWS,60.44,2026-03-01
+Monkey Shoulder,BWS,57.84,2026-03-15
+Monkey Shoulder,BWS,60.84,2026-03-31
+Monkey Shoulder,Liquorland,63.25,2026-02-01
+Monkey Shoulder,Liquorland,63.99,2026-02-15
+Monkey Shoulder,Liquorland,64.37,2026-03-01
+Monkey Shoulder,Liquorland,60.74,2026-03-15
+Monkey Shoulder,Liquorland,64.74,2026-03-31
+Monkey Shoulder,First Choice,65.04,2026-02-01
+Monkey Shoulder,First Choice,62.81,2026-02-15
+Monkey Shoulder,First Choice,63.2,2026-03-01
+Monkey Shoulder,First Choice,60.58,2026-03-15
+Monkey Shoulder,First Choice,60.58,2026-03-31
+Jameson Irish Whiskey,Dan Murphy's,52.08,2026-02-01
+Jameson Irish Whiskey,Dan Murphy's,55.04,2026-02-15
+Jameson Irish Whiskey,Dan Murphy's,50.52,2026-03-01
+Jameson Irish Whiskey,Dan Murphy's,51.0,2026-03-15
+Jameson Irish Whiskey,Dan Murphy's,54.0,2026-03-31
+Jameson Irish Whiskey,BWS,56.12,2026-02-01
+Jameson Irish Whiskey,BWS,55.04,2026-02-15
+Jameson Irish Whiskey,BWS,53.5,2026-03-01
+Jameson Irish Whiskey,BWS,55.96,2026-03-15
+Jameson Irish Whiskey,BWS,55.96,2026-03-31
+Jameson Irish Whiskey,Liquorland,56.74,2026-02-01
+Jameson Irish Whiskey,Liquorland,53.65,2026-02-15
+Jameson Irish Whiskey,Liquorland,55.11,2026-03-01
+Jameson Irish Whiskey,Liquorland,53.56,2026-03-15
+Jameson Irish Whiskey,Liquorland,55.56,2026-03-31
+Jameson Irish Whiskey,First Choice,57.7,2026-02-01
+Jameson Irish Whiskey,First Choice,56.61,2026-02-15
+Jameson Irish Whiskey,First Choice,53.07,2026-03-01
+Jameson Irish Whiskey,First Choice,53.52,2026-03-15
+Jameson Irish Whiskey,First Choice,52.52,2026-03-31
+Jameson Black Barrel,Dan Murphy's,76.92,2026-02-01
+Jameson Black Barrel,Dan Murphy's,75.46,2026-02-15
+Jameson Black Barrel,Dan Murphy's,74.73,2026-03-01
+Jameson Black Barrel,Dan Murphy's,73.0,2026-03-15
+Jameson Black Barrel,Dan Murphy's,72.0,2026-03-31
+Jameson Black Barrel,BWS,77.44,2026-02-01
+Jameson Black Barrel,BWS,74.97,2026-02-15
+Jameson Black Barrel,BWS,75.23,2026-03-01
+Jameson Black Barrel,BWS,73.5,2026-03-15
+Jameson Black Barrel,BWS,71.5,2026-03-31
+Jameson Black Barrel,Liquorland,79.3,2026-02-01
+Jameson Black Barrel,Liquorland,75.78,2026-02-15
+Jameson Black Barrel,Liquorland,77.01,2026-03-01
+Jameson Black Barrel,Liquorland,76.25,2026-03-15
+Jameson Black Barrel,Liquorland,77.25,2026-03-31
+Jameson Black Barrel,First Choice,77.82,2026-02-01
+Jameson Black Barrel,First Choice,77.28,2026-02-15
+Jameson Black Barrel,First Choice,75.52,2026-03-01
+Jameson Black Barrel,First Choice,76.75,2026-03-15
+Jameson Black Barrel,First Choice,76.75,2026-03-31
+Canadian Club Original 8YO,Dan Murphy's,48.88,2026-02-01
+Canadian Club Original 8YO,Dan Murphy's,45.94,2026-02-15
+Canadian Club Original 8YO,Dan Murphy's,48.47,2026-03-01
+Canadian Club Original 8YO,Dan Murphy's,48.0,2026-03-15
+Canadian Club Original 8YO,Dan Murphy's,49.0,2026-03-31
+Canadian Club Original 8YO,BWS,44.88,2026-02-01
+Canadian Club Original 8YO,BWS,45.98,2026-02-15
+Canadian Club Original 8YO,BWS,46.53,2026-03-01
+Canadian Club Original 8YO,BWS,45.08,2026-03-15
+Canadian Club Original 8YO,BWS,43.08,2026-03-31
+Canadian Club Original 8YO,Liquorland,50.32,2026-02-01
+Canadian Club Original 8YO,Liquorland,47.35,2026-02-15
+Canadian Club Original 8YO,Liquorland,46.86,2026-03-01
+Canadian Club Original 8YO,Liquorland,48.38,2026-03-15
+Canadian Club Original 8YO,Liquorland,47.38,2026-03-31
+Canadian Club Original 8YO,First Choice,47.32,2026-02-01
+Canadian Club Original 8YO,First Choice,47.39,2026-02-15
+Canadian Club Original 8YO,First Choice,47.92,2026-03-01
+Canadian Club Original 8YO,First Choice,48.46,2026-03-15
+Canadian Club Original 8YO,First Choice,46.46,2026-03-31
+Canadian Club 12YO,Dan Murphy's,59.32,2026-02-01
+Canadian Club 12YO,Dan Murphy's,59.16,2026-02-15
+Canadian Club 12YO,Dan Murphy's,59.58,2026-03-01
+Canadian Club 12YO,Dan Murphy's,56.0,2026-03-15
+Canadian Club 12YO,Dan Murphy's,59.0,2026-03-31
+Canadian Club 12YO,BWS,62.15,2026-02-01
+Canadian Club 12YO,BWS,61.0,2026-02-15
+Canadian Club 12YO,BWS,57.42,2026-03-01
+Canadian Club 12YO,BWS,55.84,2026-03-15
+Canadian Club 12YO,BWS,55.84,2026-03-31
+Canadian Club 12YO,Liquorland,62.09,2026-02-01
+Canadian Club 12YO,Liquorland,60.91,2026-02-15
+Canadian Club 12YO,Liquorland,61.33,2026-03-01
+Canadian Club 12YO,Liquorland,57.74,2026-03-15
+Canadian Club 12YO,Liquorland,58.74,2026-03-31
+Canadian Club 12YO,First Choice,60.88,2026-02-01
+Canadian Club 12YO,First Choice,56.73,2026-02-15
+Canadian Club 12YO,First Choice,60.16,2026-03-01
+Canadian Club 12YO,First Choice,56.58,2026-03-15
+Canadian Club 12YO,First Choice,56.58,2026-03-31
+Jack Daniel's Old No. 7,Dan Murphy's,56.12,2026-02-01
+Jack Daniel's Old No. 7,Dan Murphy's,55.06,2026-02-15
+Jack Daniel's Old No. 7,Dan Murphy's,53.53,2026-03-01
+Jack Daniel's Old No. 7,Dan Murphy's,53.0,2026-03-15
+Jack Daniel's Old No. 7,Dan Murphy's,53.0,2026-03-31
+Jack Daniel's Old No. 7,BWS,57.12,2026-02-01
+Jack Daniel's Old No. 7,BWS,56.02,2026-02-15
+Jack Daniel's Old No. 7,BWS,56.47,2026-03-01
+Jack Daniel's Old No. 7,BWS,53.92,2026-03-15
+Jack Daniel's Old No. 7,BWS,54.92,2026-03-31
+Jack Daniel's Old No. 7,Liquorland,58.84,2026-02-01
+Jack Daniel's Old No. 7,Liquorland,58.73,2026-02-15
+Jack Daniel's Old No. 7,Liquorland,57.18,2026-03-01
+Jack Daniel's Old No. 7,Liquorland,53.62,2026-03-15
+Jack Daniel's Old No. 7,Liquorland,54.62,2026-03-31
+Jack Daniel's Old No. 7,First Choice,56.76,2026-02-01
+Jack Daniel's Old No. 7,First Choice,54.65,2026-02-15
+Jack Daniel's Old No. 7,First Choice,55.1,2026-03-01
+Jack Daniel's Old No. 7,First Choice,57.54,2026-03-15
+Jack Daniel's Old No. 7,First Choice,56.54,2026-03-31
+Jack Daniel's Gentleman Jack,Dan Murphy's,72.72,2026-02-01
+Jack Daniel's Gentleman Jack,Dan Murphy's,68.36,2026-02-15
+Jack Daniel's Gentleman Jack,Dan Murphy's,69.68,2026-03-01
+Jack Daniel's Gentleman Jack,Dan Murphy's,68.0,2026-03-15
+Jack Daniel's Gentleman Jack,Dan Murphy's,69.0,2026-03-31
+Jack Daniel's Gentleman Jack,BWS,67.23,2026-02-01
+Jack Daniel's Gentleman Jack,BWS,63.95,2026-02-15
+Jack Daniel's Gentleman Jack,BWS,66.32,2026-03-01
+Jack Daniel's Gentleman Jack,BWS,62.68,2026-03-15
+Jack Daniel's Gentleman Jack,BWS,62.68,2026-03-31
+Jack Daniel's Gentleman Jack,Liquorland,70.78,2026-02-01
+Jack Daniel's Gentleman Jack,Liquorland,70.38,2026-02-15
+Jack Daniel's Gentleman Jack,Liquorland,70.68,2026-03-01
+Jack Daniel's Gentleman Jack,Liquorland,71.98,2026-03-15
+Jack Daniel's Gentleman Jack,Liquorland,67.98,2026-03-31
+Jack Daniel's Gentleman Jack,First Choice,72.45,2026-02-01
+Jack Daniel's Gentleman Jack,First Choice,70.05,2026-02-15
+Jack Daniel's Gentleman Jack,First Choice,70.36,2026-03-01
+Jack Daniel's Gentleman Jack,First Choice,69.66,2026-03-15
+Jack Daniel's Gentleman Jack,First Choice,71.66,2026-03-31
+Jack Daniel's Single Barrel,Dan Murphy's,88.44,2026-02-01
+Jack Daniel's Single Barrel,Dan Murphy's,85.72,2026-02-15
+Jack Daniel's Single Barrel,Dan Murphy's,87.86,2026-03-01
+Jack Daniel's Single Barrel,Dan Murphy's,87.0,2026-03-15
+Jack Daniel's Single Barrel,Dan Murphy's,87.0,2026-03-31
+Jack Daniel's Single Barrel,BWS,94.81,2026-02-01
+Jack Daniel's Single Barrel,BWS,90.02,2026-02-15
+Jack Daniel's Single Barrel,BWS,91.13,2026-03-01
+Jack Daniel's Single Barrel,BWS,89.24,2026-03-15
+Jack Daniel's Single Barrel,BWS,89.24,2026-03-31
+Jack Daniel's Single Barrel,Liquorland,93.31,2026-02-01
+Jack Daniel's Single Barrel,Liquorland,94.47,2026-02-15
+Jack Daniel's Single Barrel,Liquorland,92.56,2026-03-01
+Jack Daniel's Single Barrel,Liquorland,93.64,2026-03-15
+Jack Daniel's Single Barrel,Liquorland,91.64,2026-03-31
+Jack Daniel's Single Barrel,First Choice,92.48,2026-02-01
+Jack Daniel's Single Barrel,First Choice,93.68,2026-02-15
+Jack Daniel's Single Barrel,First Choice,92.78,2026-03-01
+Jack Daniel's Single Barrel,First Choice,88.88,2026-03-15
+Jack Daniel's Single Barrel,First Choice,87.88,2026-03-31
+Jack Daniel's Tennessee Apple,Dan Murphy's,60.32,2026-02-01
+Jack Daniel's Tennessee Apple,Dan Murphy's,58.16,2026-02-15
+Jack Daniel's Tennessee Apple,Dan Murphy's,59.58,2026-03-01
+Jack Daniel's Tennessee Apple,Dan Murphy's,59.0,2026-03-15
+Jack Daniel's Tennessee Apple,Dan Murphy's,59.0,2026-03-31
+Jack Daniel's Tennessee Apple,BWS,56.02,2026-02-01
+Jack Daniel's Tennessee Apple,BWS,53.96,2026-02-15
+Jack Daniel's Tennessee Apple,BWS,51.43,2026-03-01
+Jack Daniel's Tennessee Apple,BWS,51.9,2026-03-15
+Jack Daniel's Tennessee Apple,BWS,50.9,2026-03-31
+Jack Daniel's Tennessee Apple,Liquorland,58.88,2026-02-01
+Jack Daniel's Tennessee Apple,Liquorland,57.76,2026-02-15
+Jack Daniel's Tennessee Apple,Liquorland,58.21,2026-03-01
+Jack Daniel's Tennessee Apple,Liquorland,56.65,2026-03-15
+Jack Daniel's Tennessee Apple,Liquorland,53.65,2026-03-31
+Jack Daniel's Tennessee Apple,First Choice,53.69,2026-02-01
+Jack Daniel's Tennessee Apple,First Choice,55.62,2026-02-15
+Jack Daniel's Tennessee Apple,First Choice,56.09,2026-03-01
+Jack Daniel's Tennessee Apple,First Choice,54.55,2026-03-15
+Jack Daniel's Tennessee Apple,First Choice,54.55,2026-03-31
+Jim Beam White Label,Dan Murphy's,43.72,2026-02-01
+Jim Beam White Label,Dan Murphy's,41.86,2026-02-15
+Jim Beam White Label,Dan Murphy's,42.43,2026-03-01
+Jim Beam White Label,Dan Murphy's,42.0,2026-03-15
+Jim Beam White Label,Dan Murphy's,42.0,2026-03-31
+Jim Beam White Label,BWS,49.94,2026-02-01
+Jim Beam White Label,BWS,45.02,2026-02-15
+Jim Beam White Label,BWS,47.56,2026-03-01
+Jim Beam White Label,BWS,44.1,2026-03-15
+Jim Beam White Label,BWS,48.1,2026-03-31
+Jim Beam White Label,Liquorland,44.12,2026-02-01
+Jim Beam White Label,Liquorland,43.24,2026-02-15
+Jim Beam White Label,Liquorland,43.79,2026-03-01
+Jim Beam White Label,Liquorland,43.35,2026-03-15
+Jim Beam White Label,Liquorland,46.35,2026-03-31
+Jim Beam White Label,First Choice,47.35,2026-02-01
+Jim Beam White Label,First Choice,48.4,2026-02-15
+Jim Beam White Label,First Choice,46.92,2026-03-01
+Jim Beam White Label,First Choice,47.45,2026-03-15
+Jim Beam White Label,First Choice,49.45,2026-03-31
+Jim Beam Black,Dan Murphy's,54.04,2026-02-01
+Jim Beam Black,Dan Murphy's,50.02,2026-02-15
+Jim Beam Black,Dan Murphy's,49.51,2026-03-01
+Jim Beam Black,Dan Murphy's,49.0,2026-03-15
+Jim Beam Black,Dan Murphy's,51.0,2026-03-31
+Jim Beam Black,BWS,53.96,2026-02-01
+Jim Beam Black,BWS,52.96,2026-02-15
+Jim Beam Black,BWS,49.46,2026-03-01
+Jim Beam Black,BWS,50.96,2026-03-15
+Jim Beam Black,BWS,49.96,2026-03-31
+Jim Beam Black,Liquorland,54.7,2026-02-01
+Jim Beam Black,Liquorland,56.63,2026-02-15
+Jim Beam Black,Liquorland,52.1,2026-03-01
+Jim Beam Black,Liquorland,51.56,2026-03-15
+Jim Beam Black,Liquorland,55.56,2026-03-31
+Jim Beam Black,First Choice,55.66,2026-02-01
+Jim Beam Black,First Choice,55.59,2026-02-15
+Jim Beam Black,First Choice,54.06,2026-03-01
+Jim Beam Black,First Choice,53.52,2026-03-15
+Jim Beam Black,First Choice,52.52,2026-03-31
+Maker's Mark,Dan Murphy's,66.52,2026-02-01
+Maker's Mark,Dan Murphy's,66.26,2026-02-15
+Maker's Mark,Dan Murphy's,62.63,2026-03-01
+Maker's Mark,Dan Murphy's,65.0,2026-03-15
+Maker's Mark,Dan Murphy's,62.0,2026-03-31
+Maker's Mark,BWS,62.23,2026-02-01
+Maker's Mark,BWS,64.0,2026-02-15
+Maker's Mark,BWS,62.38,2026-03-01
+Maker's Mark,BWS,59.76,2026-03-15
+Maker's Mark,BWS,59.76,2026-03-31
+Maker's Mark,Liquorland,65.41,2026-02-01
+Maker's Mark,Liquorland,66.14,2026-02-15
+Maker's Mark,Liquorland,65.5,2026-03-01
+Maker's Mark,Liquorland,61.86,2026-03-15
+Maker's Mark,Liquorland,63.86,2026-03-31
+Maker's Mark,First Choice,62.04,2026-02-01
+Maker's Mark,First Choice,62.83,2026-02-15
+Maker's Mark,First Choice,61.23,2026-03-01
+Maker's Mark,First Choice,59.62,2026-03-15
+Maker's Mark,First Choice,61.62,2026-03-31
+Wild Turkey 101,Dan Murphy's,63.52,2026-02-01
+Wild Turkey 101,Dan Murphy's,64.26,2026-02-15
+Wild Turkey 101,Dan Murphy's,64.63,2026-03-01
+Wild Turkey 101,Dan Murphy's,63.0,2026-03-15
+Wild Turkey 101,Dan Murphy's,64.0,2026-03-31
+Wild Turkey 101,BWS,63.27,2026-02-01
+Wild Turkey 101,BWS,61.04,2026-02-15
+Wild Turkey 101,BWS,62.42,2026-03-01
+Wild Turkey 101,BWS,63.8,2026-03-15
+Wild Turkey 101,BWS,59.8,2026-03-31
+Wild Turkey 101,Liquorland,61.19,2026-02-01
+Wild Turkey 101,Liquorland,62.0,2026-02-15
+Wild Turkey 101,Liquorland,59.4,2026-03-01
+Wild Turkey 101,Liquorland,59.8,2026-03-15
+Wild Turkey 101,Liquorland,58.8,2026-03-31
+Wild Turkey 101,First Choice,64.1,2026-02-01
+Wild Turkey 101,First Choice,64.85,2026-02-15
+Wild Turkey 101,First Choice,62.23,2026-03-01
+Wild Turkey 101,First Choice,62.6,2026-03-15
+Wild Turkey 101,First Choice,62.6,2026-03-31
+Buffalo Trace,Dan Murphy's,67.68,2026-02-01
+Buffalo Trace,Dan Murphy's,70.34,2026-02-15
+Buffalo Trace,Dan Murphy's,68.67,2026-03-01
+Buffalo Trace,Dan Murphy's,69.0,2026-03-15
+Buffalo Trace,Dan Murphy's,66.0,2026-03-31
+Buffalo Trace,BWS,62.15,2026-02-01
+Buffalo Trace,BWS,62.93,2026-02-15
+Buffalo Trace,BWS,62.33,2026-03-01
+Buffalo Trace,BWS,58.72,2026-03-15
+Buffalo Trace,BWS,62.72,2026-03-31
+Buffalo Trace,Liquorland,67.56,2026-02-01
+Buffalo Trace,Liquorland,68.24,2026-02-15
+Buffalo Trace,Liquorland,64.58,2026-03-01
+Buffalo Trace,Liquorland,64.92,2026-03-15
+Buffalo Trace,Liquorland,63.92,2026-03-31
+Buffalo Trace,First Choice,67.15,2026-02-01
+Buffalo Trace,First Choice,62.89,2026-02-15
+Buffalo Trace,First Choice,64.27,2026-03-01
+Buffalo Trace,First Choice,60.64,2026-03-15
+Buffalo Trace,First Choice,60.64,2026-03-31
+Woodford Reserve,Dan Murphy's,73.88,2026-02-01
+Woodford Reserve,Dan Murphy's,74.44,2026-02-15
+Woodford Reserve,Dan Murphy's,73.72,2026-03-01
+Woodford Reserve,Dan Murphy's,72.0,2026-03-15
+Woodford Reserve,Dan Murphy's,70.0,2026-03-31
+Woodford Reserve,BWS,70.34,2026-02-01
+Woodford Reserve,BWS,69.95,2026-02-15
+Woodford Reserve,BWS,70.26,2026-03-01
+Woodford Reserve,BWS,68.56,2026-03-15
+Woodford Reserve,BWS,68.56,2026-03-31
+Woodford Reserve,Liquorland,78.09,2026-02-01
+Woodford Reserve,Liquorland,75.62,2026-02-15
+Woodford Reserve,Liquorland,71.89,2026-03-01
+Woodford Reserve,Liquorland,73.16,2026-03-15
+Woodford Reserve,Liquorland,74.16,2026-03-31
+Woodford Reserve,First Choice,77.71,2026-02-01
+Woodford Reserve,First Choice,76.21,2026-02-15
+Woodford Reserve,First Choice,76.47,2026-03-01
+Woodford Reserve,First Choice,73.72,2026-03-15
+Woodford Reserve,First Choice,72.72,2026-03-31
+Bulleit Bourbon,Dan Murphy's,60.4,2026-02-01
+Bulleit Bourbon,Dan Murphy's,59.2,2026-02-15
+Bulleit Bourbon,Dan Murphy's,60.6,2026-03-01
+Bulleit Bourbon,Dan Murphy's,58.0,2026-03-15
+Bulleit Bourbon,Dan Murphy's,60.0,2026-03-31
+Bulleit Bourbon,BWS,62.13,2026-02-01
+Bulleit Bourbon,BWS,57.96,2026-02-15
+Bulleit Bourbon,BWS,61.37,2026-03-01
+Bulleit Bourbon,BWS,57.78,2026-03-15
+Bulleit Bourbon,BWS,59.78,2026-03-31
+Bulleit Bourbon,Liquorland,66.38,2026-02-01
+Bulleit Bourbon,Liquorland,65.11,2026-02-15
+Bulleit Bourbon,Liquorland,65.47,2026-03-01
+Bulleit Bourbon,Liquorland,61.83,2026-03-15
+Bulleit Bourbon,Liquorland,61.83,2026-03-31
+Bulleit Bourbon,First Choice,64.03,2026-02-01
+Bulleit Bourbon,First Choice,60.82,2026-02-15
+Bulleit Bourbon,First Choice,61.22,2026-03-01
+Bulleit Bourbon,First Choice,62.61,2026-03-15
+Bulleit Bourbon,First Choice,61.61,2026-03-31
+Dewar's 12YO,Dan Murphy's,52.04,2026-02-01
+Dewar's 12YO,Dan Murphy's,52.02,2026-02-15
+Dewar's 12YO,Dan Murphy's,51.51,2026-03-01
+Dewar's 12YO,Dan Murphy's,52.0,2026-03-15
+Dewar's 12YO,Dan Murphy's,49.0,2026-03-31
+Dewar's 12YO,BWS,49.88,2026-02-01
+Dewar's 12YO,BWS,46.94,2026-02-15
+Dewar's 12YO,BWS,48.47,2026-03-01
+Dewar's 12YO,BWS,45.0,2026-03-15
+Dewar's 12YO,BWS,48.0,2026-03-31
+Dewar's 12YO,Liquorland,51.56,2026-02-01
+Dewar's 12YO,Liquorland,53.53,2026-02-15
+Dewar's 12YO,Liquorland,50.02,2026-03-01
+Dewar's 12YO,Liquorland,49.5,2026-03-15
+Dewar's 12YO,Liquorland,51.5,2026-03-31
+Dewar's 12YO,First Choice,50.48,2026-02-01
+Dewar's 12YO,First Choice,48.49,2026-02-15
+Dewar's 12YO,First Choice,51.99,2026-03-01
+Dewar's 12YO,First Choice,49.5,2026-03-15
+Dewar's 12YO,First Choice,49.5,2026-03-31
+Dewar's White Label,Dan Murphy's,44.72,2026-02-01
+Dewar's White Label,Dan Murphy's,43.86,2026-02-15
+Dewar's White Label,Dan Murphy's,45.43,2026-03-01
+Dewar's White Label,Dan Murphy's,41.0,2026-03-15
+Dewar's White Label,Dan Murphy's,43.0,2026-03-31
+Dewar's White Label,BWS,46.95,2026-02-01
+Dewar's White Label,BWS,46.04,2026-02-15
+Dewar's White Label,BWS,45.59,2026-03-01
+Dewar's White Label,BWS,43.14,2026-03-15
+Dewar's White Label,BWS,47.14,2026-03-31
+Dewar's White Label,Liquorland,44.06,2026-02-01
+Dewar's White Label,Liquorland,43.18,2026-02-15
+Dewar's White Label,Liquorland,43.73,2026-03-01
+Dewar's White Label,Liquorland,42.29,2026-03-15
+Dewar's White Label,Liquorland,45.29,2026-03-31
+Dewar's White Label,First Choice,44.09,2026-02-01
+Dewar's White Label,First Choice,43.26,2026-02-15
+Dewar's White Label,First Choice,41.84,2026-03-01
+Dewar's White Label,First Choice,42.43,2026-03-15
+Dewar's White Label,First Choice,42.43,2026-03-31
+Ballantine's Finest,Dan Murphy's,41.64,2026-02-01
+Ballantine's Finest,Dan Murphy's,42.82,2026-02-15
+Ballantine's Finest,Dan Murphy's,40.41,2026-03-01
+Ballantine's Finest,Dan Murphy's,39.0,2026-03-15
+Ballantine's Finest,Dan Murphy's,41.0,2026-03-31
+Ballantine's Finest,BWS,42.85,2026-02-01
+Ballantine's Finest,BWS,45.0,2026-02-15
+Ballantine's Finest,BWS,41.58,2026-03-01
+Ballantine's Finest,BWS,42.16,2026-03-15
+Ballantine's Finest,BWS,42.16,2026-03-31
+Ballantine's Finest,Liquorland,48.07,2026-02-01
+Ballantine's Finest,Liquorland,46.17,2026-02-15
+Ballantine's Finest,Liquorland,47.71,2026-03-01
+Ballantine's Finest,Liquorland,43.26,2026-03-15
+Ballantine's Finest,Liquorland,47.26,2026-03-31
+Ballantine's Finest,First Choice,44.16,2026-02-01
+Ballantine's Finest,First Choice,45.29,2026-02-15
+Ballantine's Finest,First Choice,42.85,2026-03-01
+Ballantine's Finest,First Choice,42.42,2026-03-15
+Ballantine's Finest,First Choice,44.42,2026-03-31
+Dimple 12YO,Dan Murphy's,57.28,2026-02-01
+Dimple 12YO,Dan Murphy's,56.14,2026-02-15
+Dimple 12YO,Dan Murphy's,58.57,2026-03-01
+Dimple 12YO,Dan Murphy's,59.0,2026-03-15
+Dimple 12YO,Dan Murphy's,59.0,2026-03-31
+Dimple 12YO,BWS,56.01,2026-02-01
+Dimple 12YO,BWS,53.94,2026-02-15
+Dimple 12YO,BWS,55.4,2026-03-01
+Dimple 12YO,BWS,51.86,2026-03-15
+Dimple 12YO,BWS,51.86,2026-03-31
+Dimple 12YO,Liquorland,58.98,2026-02-01
+Dimple 12YO,Liquorland,59.84,2026-02-15
+Dimple 12YO,Liquorland,55.28,2026-03-01
+Dimple 12YO,Liquorland,55.71,2026-03-15
+Dimple 12YO,Liquorland,54.71,2026-03-31
+Dimple 12YO,First Choice,63.99,2026-02-01
+Dimple 12YO,First Choice,62.78,2026-02-15
+Dimple 12YO,First Choice,62.18,2026-03-01
+Dimple 12YO,First Choice,59.57,2026-03-15
+Dimple 12YO,First Choice,59.57,2026-03-31
+J&B Rare,Dan Murphy's,42.68,2026-02-01
+J&B Rare,Dan Murphy's,43.84,2026-02-15
+J&B Rare,Dan Murphy's,43.42,2026-03-01
+J&B Rare,Dan Murphy's,44.0,2026-03-15
+J&B Rare,Dan Murphy's,41.0,2026-03-31
+J&B Rare,BWS,44.83,2026-02-01
+J&B Rare,BWS,40.0,2026-02-15
+J&B Rare,BWS,41.59,2026-03-01
+J&B Rare,BWS,41.18,2026-03-15
+J&B Rare,BWS,41.18,2026-03-31
+J&B Rare,Liquorland,45.92,2026-02-01
+J&B Rare,Liquorland,43.07,2026-02-15
+J&B Rare,Liquorland,42.65,2026-03-01
+J&B Rare,Liquorland,42.23,2026-03-15
+J&B Rare,Liquorland,42.23,2026-03-31
+J&B Rare,First Choice,45.19,2026-02-01
+J&B Rare,First Choice,46.3,2026-02-15
+J&B Rare,First Choice,43.85,2026-03-01
+J&B Rare,First Choice,43.41,2026-03-15
+J&B Rare,First Choice,43.41,2026-03-31
+Grant's Triple Wood,Dan Murphy's,41.64,2026-02-01
+Grant's Triple Wood,Dan Murphy's,40.82,2026-02-15
+Grant's Triple Wood,Dan Murphy's,41.41,2026-03-01
+Grant's Triple Wood,Dan Murphy's,43.0,2026-03-15
+Grant's Triple Wood,Dan Murphy's,40.0,2026-03-31
+Grant's Triple Wood,BWS,38.69,2026-02-01
+Grant's Triple Wood,BWS,35.94,2026-02-15
+Grant's Triple Wood,BWS,38.57,2026-03-01
+Grant's Triple Wood,BWS,37.2,2026-03-15
+Grant's Triple Wood,BWS,36.2,2026-03-31
+Grant's Triple Wood,Liquorland,43.81,2026-02-01
+Grant's Triple Wood,Liquorland,43.0,2026-02-15
+Grant's Triple Wood,Liquorland,39.6,2026-03-01
+Grant's Triple Wood,Liquorland,38.2,2026-03-15
+Grant's Triple Wood,Liquorland,41.2,2026-03-31
+Grant's Triple Wood,First Choice,37.94,2026-02-01
+Grant's Triple Wood,First Choice,37.17,2026-02-15
+Grant's Triple Wood,First Choice,36.78,2026-03-01
+Grant's Triple Wood,First Choice,39.4,2026-03-15
+Grant's Triple Wood,First Choice,37.4,2026-03-31
+Glenmorangie Original 10YO,Dan Murphy's,87.32,2026-02-01
+Glenmorangie Original 10YO,Dan Murphy's,84.66,2026-02-15
+Glenmorangie Original 10YO,Dan Murphy's,81.83,2026-03-01
+Glenmorangie Original 10YO,Dan Murphy's,83.0,2026-03-15
+Glenmorangie Original 10YO,Dan Murphy's,82.0,2026-03-31
+Glenmorangie Original 10YO,BWS,80.53,2026-02-01
+Glenmorangie Original 10YO,BWS,78.95,2026-02-15
+Glenmorangie Original 10YO,BWS,79.15,2026-03-01
+Glenmorangie Original 10YO,BWS,81.36,2026-03-15
+Glenmorangie Original 10YO,BWS,81.36,2026-03-31
+Glenmorangie Original 10YO,Liquorland,88.92,2026-02-01
+Glenmorangie Original 10YO,Liquorland,86.19,2026-02-15
+Glenmorangie Original 10YO,Liquorland,87.32,2026-03-01
+Glenmorangie Original 10YO,Liquorland,88.46,2026-03-15
+Glenmorangie Original 10YO,Liquorland,85.46,2026-03-31
+Glenmorangie Original 10YO,First Choice,90.25,2026-02-01
+Glenmorangie Original 10YO,First Choice,89.54,2026-02-15
+Glenmorangie Original 10YO,First Choice,86.68,2026-03-01
+Glenmorangie Original 10YO,First Choice,83.82,2026-03-15
+Glenmorangie Original 10YO,First Choice,83.82,2026-03-31
+Talisker 10YO,Dan Murphy's,98.72,2026-02-01
+Talisker 10YO,Dan Murphy's,96.86,2026-02-15
+Talisker 10YO,Dan Murphy's,93.93,2026-03-01
+Talisker 10YO,Dan Murphy's,92.0,2026-03-15
+Talisker 10YO,Dan Murphy's,91.0,2026-03-31
+Talisker 10YO,BWS,94.76,2026-02-01
+Talisker 10YO,BWS,92.94,2026-02-15
+Talisker 10YO,BWS,91.03,2026-03-01
+Talisker 10YO,BWS,89.12,2026-03-15
+Talisker 10YO,BWS,90.12,2026-03-31
+Talisker 10YO,Liquorland,103.81,2026-02-01
+Talisker 10YO,Liquorland,99.82,2026-02-15
+Talisker 10YO,Liquorland,102.82,2026-03-01
+Talisker 10YO,Liquorland,98.82,2026-03-15
+Talisker 10YO,Liquorland,97.82,2026-03-31
+Talisker 10YO,First Choice,100.82,2026-02-01
+Talisker 10YO,First Choice,99.88,2026-02-15
+Talisker 10YO,First Choice,97.91,2026-03-01
+Talisker 10YO,First Choice,95.94,2026-03-15
+Talisker 10YO,First Choice,98.94,2026-03-31
+Laphroaig 10YO,Dan Murphy's,98.8,2026-02-01
+Laphroaig 10YO,Dan Murphy's,94.9,2026-02-15
+Laphroaig 10YO,Dan Murphy's,94.95,2026-03-01
+Laphroaig 10YO,Dan Murphy's,93.0,2026-03-15
+Laphroaig 10YO,Dan Murphy's,96.0,2026-03-31
+Laphroaig 10YO,BWS,98.8,2026-02-01
+Laphroaig 10YO,BWS,95.94,2026-02-15
+Laphroaig 10YO,BWS,92.01,2026-03-01
+Laphroaig 10YO,BWS,94.08,2026-03-15
+Laphroaig 10YO,BWS,91.08,2026-03-31
+Laphroaig 10YO,Liquorland,102.8,2026-02-01
+Laphroaig 10YO,Liquorland,101.84,2026-02-15
+Laphroaig 10YO,Liquorland,97.86,2026-03-01
+Laphroaig 10YO,Liquorland,99.88,2026-03-15
+Laphroaig 10YO,Liquorland,95.88,2026-03-31
+Laphroaig 10YO,First Choice,98.8,2026-02-01
+Laphroaig 10YO,First Choice,98.88,2026-02-15
+Laphroaig 10YO,First Choice,96.92,2026-03-01
+Laphroaig 10YO,First Choice,96.96,2026-03-15
+Laphroaig 10YO,First Choice,95.96,2026-03-31
+The Balvenie DoubleWood 12YO,Dan Murphy's,118.56,2026-02-01
+The Balvenie DoubleWood 12YO,Dan Murphy's,117.28,2026-02-15
+The Balvenie DoubleWood 12YO,Dan Murphy's,113.14,2026-03-01
+The Balvenie DoubleWood 12YO,Dan Murphy's,114.0,2026-03-15
+The Balvenie DoubleWood 12YO,Dan Murphy's,116.0,2026-03-31
+The Balvenie DoubleWood 12YO,BWS,117.21,2026-02-01
+The Balvenie DoubleWood 12YO,BWS,115.95,2026-02-15
+The Balvenie DoubleWood 12YO,BWS,114.83,2026-03-01
+The Balvenie DoubleWood 12YO,BWS,110.7,2026-03-15
+The Balvenie DoubleWood 12YO,BWS,112.7,2026-03-31
+The Balvenie DoubleWood 12YO,Liquorland,123.23,2026-02-01
+The Balvenie DoubleWood 12YO,Liquorland,122.84,2026-02-15
+The Balvenie DoubleWood 12YO,Liquorland,121.64,2026-03-01
+The Balvenie DoubleWood 12YO,Liquorland,118.45,2026-03-15
+The Balvenie DoubleWood 12YO,Liquorland,117.45,2026-03-31
+The Balvenie DoubleWood 12YO,First Choice,119.72,2026-02-01
+The Balvenie DoubleWood 12YO,First Choice,115.43,2026-02-15
+The Balvenie DoubleWood 12YO,First Choice,116.29,2026-03-01
+The Balvenie DoubleWood 12YO,First Choice,112.15,2026-03-15
+The Balvenie DoubleWood 12YO,First Choice,112.15,2026-03-31
+The Macallan 12 Double Cask,Dan Murphy's,145.56,2026-02-01
+The Macallan 12 Double Cask,Dan Murphy's,143.78,2026-02-15
+The Macallan 12 Double Cask,Dan Murphy's,140.39,2026-03-01
+The Macallan 12 Double Cask,Dan Murphy's,140.0,2026-03-15
+The Macallan 12 Double Cask,Dan Murphy's,138.0,2026-03-31
+The Macallan 12 Double Cask,BWS,143.79,2026-02-01
+The Macallan 12 Double Cask,BWS,140.0,2026-02-15
+The Macallan 12 Double Cask,BWS,138.61,2026-03-01
+The Macallan 12 Double Cask,BWS,141.22,2026-03-15
+The Macallan 12 Double Cask,BWS,138.22,2026-03-31
+The Macallan 12 Double Cask,Liquorland,151.98,2026-02-01
+The Macallan 12 Double Cask,Liquorland,146.07,2026-02-15
+The Macallan 12 Double Cask,Liquorland,148.62,2026-03-01
+The Macallan 12 Double Cask,Liquorland,147.17,2026-03-15
+The Macallan 12 Double Cask,Liquorland,145.17,2026-03-31
+The Macallan 12 Double Cask,First Choice,150.09,2026-02-01
+The Macallan 12 Double Cask,First Choice,144.24,2026-02-15
+The Macallan 12 Double Cask,First Choice,142.81,2026-03-01
+The Macallan 12 Double Cask,First Choice,142.39,2026-03-15
+The Macallan 12 Double Cask,First Choice,142.39,2026-03-31
+The Macallan 12 Sherry Oak,Dan Murphy's,169.56,2026-02-01
+The Macallan 12 Sherry Oak,Dan Murphy's,169.28,2026-02-15
+The Macallan 12 Sherry Oak,Dan Murphy's,164.64,2026-03-01
+The Macallan 12 Sherry Oak,Dan Murphy's,162.0,2026-03-15
+The Macallan 12 Sherry Oak,Dan Murphy's,162.0,2026-03-31
+The Macallan 12 Sherry Oak,BWS,167.09,2026-02-01
+The Macallan 12 Sherry Oak,BWS,163.89,2026-02-15
+The Macallan 12 Sherry Oak,BWS,160.3,2026-03-01
+The Macallan 12 Sherry Oak,BWS,159.7,2026-03-15
+The Macallan 12 Sherry Oak,BWS,158.7,2026-03-31
+The Macallan 12 Sherry Oak,Liquorland,173.71,2026-02-01
+The Macallan 12 Sherry Oak,Liquorland,173.33,2026-02-15
+The Macallan 12 Sherry Oak,Liquorland,170.64,2026-03-01
+The Macallan 12 Sherry Oak,Liquorland,166.95,2026-03-15
+The Macallan 12 Sherry Oak,Liquorland,170.95,2026-03-31
+The Macallan 12 Sherry Oak,First Choice,173.28,2026-02-01
+The Macallan 12 Sherry Oak,First Choice,166.96,2026-02-15
+The Macallan 12 Sherry Oak,First Choice,169.31,2026-03-01
+The Macallan 12 Sherry Oak,First Choice,164.65,2026-03-15
+The Macallan 12 Sherry Oak,First Choice,164.65,2026-03-31
+Nikka From The Barrel,Dan Murphy's,84.16,2026-02-01
+Nikka From The Barrel,Dan Murphy's,81.58,2026-02-15
+Nikka From The Barrel,Dan Murphy's,81.79,2026-03-01
+Nikka From The Barrel,Dan Murphy's,78.0,2026-03-15
+Nikka From The Barrel,Dan Murphy's,80.0,2026-03-31
+Nikka From The Barrel,BWS,76.31,2026-02-01
+Nikka From The Barrel,BWS,77.83,2026-02-15
+Nikka From The Barrel,BWS,74.08,2026-03-01
+Nikka From The Barrel,BWS,72.34,2026-03-15
+Nikka From The Barrel,BWS,75.34,2026-03-31
+Nikka From The Barrel,Liquorland,85.71,2026-02-01
+Nikka From The Barrel,Liquorland,81.1,2026-02-15
+Nikka From The Barrel,Liquorland,82.29,2026-03-01
+Nikka From The Barrel,Liquorland,80.49,2026-03-15
+Nikka From The Barrel,Liquorland,78.49,2026-03-31
+Nikka From The Barrel,First Choice,83.06,2026-02-01
+Nikka From The Barrel,First Choice,81.45,2026-02-15
+Nikka From The Barrel,First Choice,80.64,2026-03-01
+Nikka From The Barrel,First Choice,78.83,2026-03-15
+Nikka From The Barrel,First Choice,82.83,2026-03-31
+Suntory Toki,Dan Murphy's,67.68,2026-02-01
+Suntory Toki,Dan Murphy's,68.34,2026-02-15
+Suntory Toki,Dan Murphy's,65.67,2026-03-01
+Suntory Toki,Dan Murphy's,68.0,2026-03-15
+Suntory Toki,Dan Murphy's,69.0,2026-03-31
+Suntory Toki,BWS,69.24,2026-02-01
+Suntory Toki,BWS,68.93,2026-02-15
+Suntory Toki,BWS,66.28,2026-03-01
+Suntory Toki,BWS,66.62,2026-03-15
+Suntory Toki,BWS,65.62,2026-03-31
+Suntory Toki,Liquorland,75.91,2026-02-01
+Suntory Toki,Liquorland,71.49,2026-02-15
+Suntory Toki,Liquorland,72.78,2026-03-01
+Suntory Toki,Liquorland,72.07,2026-03-15
+Suntory Toki,Liquorland,71.07,2026-03-31
+Suntory Toki,First Choice,71.4,2026-02-01
+Suntory Toki,First Choice,71.04,2026-02-15
+Suntory Toki,First Choice,69.37,2026-03-01
+Suntory Toki,First Choice,66.69,2026-03-15
+Suntory Toki,First Choice,65.69,2026-03-31
+Hibiki Japanese Harmony,Dan Murphy's,171.68,2026-02-01
+Hibiki Japanese Harmony,Dan Murphy's,172.34,2026-02-15
+Hibiki Japanese Harmony,Dan Murphy's,169.67,2026-03-01
+Hibiki Japanese Harmony,Dan Murphy's,168.0,2026-03-15
+Hibiki Japanese Harmony,Dan Murphy's,166.0,2026-03-31
+Hibiki Japanese Harmony,BWS,167.09,2026-02-01
+Hibiki Japanese Harmony,BWS,164.89,2026-02-15
+Hibiki Japanese Harmony,BWS,162.3,2026-03-01
+Hibiki Japanese Harmony,BWS,158.7,2026-03-15
+Hibiki Japanese Harmony,BWS,160.7,2026-03-31
+Hibiki Japanese Harmony,Liquorland,179.83,2026-02-01
+Hibiki Japanese Harmony,Liquorland,173.39,2026-02-15
+Hibiki Japanese Harmony,Liquorland,171.67,2026-03-01
+Hibiki Japanese Harmony,Liquorland,170.95,2026-03-15
+Hibiki Japanese Harmony,Liquorland,171.95,2026-03-31
+Hibiki Japanese Harmony,First Choice,176.4,2026-02-01
+Hibiki Japanese Harmony,First Choice,172.02,2026-02-15
+Hibiki Japanese Harmony,First Choice,168.34,2026-03-01
+Hibiki Japanese Harmony,First Choice,169.65,2026-03-15
+Hibiki Japanese Harmony,First Choice,170.65,2026-03-31
+Starward Two-Fold,Dan Murphy's,86.24,2026-02-01
+Starward Two-Fold,Dan Murphy's,80.62,2026-02-15
+Starward Two-Fold,Dan Murphy's,79.81,2026-03-01
+Starward Two-Fold,Dan Murphy's,80.0,2026-03-15
+Starward Two-Fold,Dan Murphy's,79.0,2026-03-31
+Starward Two-Fold,BWS,81.58,2026-02-01
+Starward Two-Fold,BWS,82.01,2026-02-15
+Starward Two-Fold,BWS,77.22,2026-03-01
+Starward Two-Fold,BWS,76.44,2026-03-15
+Starward Two-Fold,BWS,80.44,2026-03-31
+Starward Two-Fold,Liquorland,85.59,2026-02-01
+Starward Two-Fold,Liquorland,81.97,2026-02-15
+Starward Two-Fold,Liquorland,80.15,2026-03-01
+Starward Two-Fold,Liquorland,79.34,2026-03-15
+Starward Two-Fold,Liquorland,83.34,2026-03-31
+Starward Two-Fold,First Choice,78.89,2026-02-01
+Starward Two-Fold,First Choice,78.34,2026-02-15
+Starward Two-Fold,First Choice,77.56,2026-03-01
+Starward Two-Fold,First Choice,78.78,2026-03-15
+Starward Two-Fold,First Choice,77.78,2026-03-31
+Starward Nova,Dan Murphy's,112.36,2026-02-01
+Starward Nova,Dan Murphy's,110.18,2026-02-15
+Starward Nova,Dan Murphy's,108.09,2026-03-01
+Starward Nova,Dan Murphy's,109.0,2026-03-15
+Starward Nova,Dan Murphy's,111.0,2026-03-31
+Starward Nova,BWS,110.05,2026-02-01
+Starward Nova,BWS,106.94,2026-02-15
+Starward Nova,BWS,106.88,2026-03-01
+Starward Nova,BWS,107.82,2026-03-15
+Starward Nova,BWS,105.82,2026-03-31
+Starward Nova,Liquorland,116.72,2026-02-01
+Starward Nova,Liquorland,112.5,2026-02-15
+Starward Nova,Liquorland,112.38,2026-03-01
+Starward Nova,Liquorland,113.27,2026-03-15
+Starward Nova,Liquorland,112.27,2026-03-31
+Starward Nova,First Choice,114.53,2026-02-01
+Starward Nova,First Choice,115.31,2026-02-15
+Starward Nova,First Choice,112.2,2026-03-01
+Starward Nova,First Choice,113.09,2026-03-15
+Starward Nova,First Choice,113.09,2026-03-31
+Archie Rose Single Malt,Dan Murphy's,106.12,2026-02-01
+Archie Rose Single Malt,Dan Murphy's,105.06,2026-02-15
+Archie Rose Single Malt,Dan Murphy's,104.03,2026-03-01
+Archie Rose Single Malt,Dan Murphy's,101.0,2026-03-15
+Archie Rose Single Malt,Dan Murphy's,102.0,2026-03-31
+Archie Rose Single Malt,BWS,107.06,2026-02-01
+Archie Rose Single Malt,BWS,106.98,2026-02-15
+Archie Rose Single Malt,BWS,103.94,2026-03-01
+Archie Rose Single Malt,BWS,103.9,2026-03-15
+Archie Rose Single Malt,BWS,103.9,2026-03-31
+Archie Rose Single Malt,Liquorland,116.6,2026-02-01
+Archie Rose Single Malt,Liquorland,112.37,2026-02-15
+Archie Rose Single Malt,Liquorland,112.26,2026-03-01
+Archie Rose Single Malt,Liquorland,109.15,2026-03-15
+Archie Rose Single Malt,Liquorland,113.15,2026-03-31
+Archie Rose Single Malt,First Choice,106.21,2026-02-01
+Archie Rose Single Malt,First Choice,106.13,2026-02-15
+Archie Rose Single Malt,First Choice,106.09,2026-03-01
+Archie Rose Single Malt,First Choice,106.05,2026-03-15
+Archie Rose Single Malt,First Choice,106.05,2026-03-31
+Lark Symphony No.1,Dan Murphy's,133.04,2026-02-01
+Lark Symphony No.1,Dan Murphy's,126.52,2026-02-15
+Lark Symphony No.1,Dan Murphy's,127.26,2026-03-01
+Lark Symphony No.1,Dan Murphy's,128.0,2026-03-15
+Lark Symphony No.1,Dan Murphy's,127.0,2026-03-31
+Lark Symphony No.1,BWS,132.45,2026-02-01
+Lark Symphony No.1,BWS,129.91,2026-02-15
+Lark Symphony No.1,BWS,129.63,2026-03-01
+Lark Symphony No.1,BWS,127.36,2026-03-15
+Lark Symphony No.1,BWS,129.36,2026-03-31
+Lark Symphony No.1,Liquorland,134.16,2026-02-01
+Lark Symphony No.1,Liquorland,132.56,2026-02-15
+Lark Symphony No.1,Liquorland,131.26,2026-03-01
+Lark Symphony No.1,Liquorland,127.96,2026-03-15
+Lark Symphony No.1,Liquorland,130.96,2026-03-31
+Lark Symphony No.1,First Choice,131.41,2026-02-01
+Lark Symphony No.1,First Choice,128.87,2026-02-15
+Lark Symphony No.1,First Choice,130.59,2026-03-01
+Lark Symphony No.1,First Choice,125.32,2026-03-15
+Lark Symphony No.1,First Choice,127.32,2026-03-31
+Lark Classic Cask,Dan Murphy's,143.44,2026-02-01
+Lark Classic Cask,Dan Murphy's,138.72,2026-02-15
+Lark Classic Cask,Dan Murphy's,137.36,2026-03-01
+Lark Classic Cask,Dan Murphy's,138.0,2026-03-15
+Lark Classic Cask,Dan Murphy's,136.0,2026-03-31
+Lark Classic Cask,BWS,135.45,2026-02-01
+Lark Classic Cask,BWS,132.8,2026-02-15
+Lark Classic Cask,BWS,132.48,2026-03-01
+Lark Classic Cask,BWS,131.16,2026-03-15
+Lark Classic Cask,BWS,132.16,2026-03-31
+Lark Classic Cask,Liquorland,149.95,2026-02-01
+Lark Classic Cask,Liquorland,146.11,2026-02-15
+Lark Classic Cask,Liquorland,144.68,2026-03-01
+Lark Classic Cask,Liquorland,144.26,2026-03-15
+Lark Classic Cask,Liquorland,142.26,2026-03-31
+Lark Classic Cask,First Choice,145.08,2026-02-01
+Lark Classic Cask,First Choice,143.25,2026-02-15
+Lark Classic Cask,First Choice,143.83,2026-03-01
+Lark Classic Cask,First Choice,140.42,2026-03-15
+Lark Classic Cask,First Choice,143.42,2026-03-31
+Bushmills Original,Dan Murphy's,44.8,2026-02-01
+Bushmills Original,Dan Murphy's,43.9,2026-02-15
+Bushmills Original,Dan Murphy's,43.45,2026-03-01
+Bushmills Original,Dan Murphy's,43.0,2026-03-15
+Bushmills Original,Dan Murphy's,47.0,2026-03-31
+Bushmills Original,BWS,48.96,2026-02-01
+Bushmills Original,BWS,48.02,2026-02-15
+Bushmills Original,BWS,45.55,2026-03-01
+Bushmills Original,BWS,49.08,2026-03-15
+Bushmills Original,BWS,47.08,2026-03-31
+Bushmills Original,Liquorland,52.32,2026-02-01
+Bushmills Original,Liquorland,48.35,2026-02-15
+Bushmills Original,Liquorland,49.86,2026-03-01
+Bushmills Original,Liquorland,50.38,2026-03-15
+Bushmills Original,Liquorland,48.38,2026-03-31
+Bushmills Original,First Choice,50.32,2026-02-01
+Bushmills Original,First Choice,46.39,2026-02-15
+Bushmills Original,First Choice,45.92,2026-03-01
+Bushmills Original,First Choice,46.46,2026-03-15
+Bushmills Original,First Choice,48.46,2026-03-31
+Bushmills Black Bush,Dan Murphy's,62.36,2026-02-01
+Bushmills Black Bush,Dan Murphy's,59.18,2026-02-15
+Bushmills Black Bush,Dan Murphy's,58.59,2026-03-01
+Bushmills Black Bush,Dan Murphy's,57.0,2026-03-15
+Bushmills Black Bush,Dan Murphy's,58.0,2026-03-31
+Bushmills Black Bush,BWS,61.21,2026-02-01
+Bushmills Black Bush,BWS,62.02,2026-02-15
+Bushmills Black Bush,BWS,58.42,2026-03-01
+Bushmills Black Bush,BWS,57.82,2026-03-15
+Bushmills Black Bush,BWS,58.82,2026-03-31
+Bushmills Black Bush,Liquorland,66.32,2026-02-01
+Bushmills Black Bush,Liquorland,66.05,2026-02-15
+Bushmills Black Bush,Liquorland,64.41,2026-03-01
+Bushmills Black Bush,Liquorland,61.77,2026-03-15
+Bushmills Black Bush,Liquorland,61.77,2026-03-31
+Bushmills Black Bush,First Choice,63.97,2026-02-01
+Bushmills Black Bush,First Choice,60.78,2026-02-15
+Bushmills Black Bush,First Choice,62.19,2026-03-01
+Bushmills Black Bush,First Choice,61.59,2026-03-15
+Bushmills Black Bush,First Choice,60.59,2026-03-31
+Fireball Cinnamon Whisky,Dan Murphy's,44.64,2026-02-01
+Fireball Cinnamon Whisky,Dan Murphy's,43.82,2026-02-15
+Fireball Cinnamon Whisky,Dan Murphy's,42.41,2026-03-01
+Fireball Cinnamon Whisky,Dan Murphy's,40.0,2026-03-15
+Fireball Cinnamon Whisky,Dan Murphy's,40.0,2026-03-31
+Fireball Cinnamon Whisky,BWS,37.71,2026-02-01
+Fireball Cinnamon Whisky,BWS,36.94,2026-02-15
+Fireball Cinnamon Whisky,BWS,36.56,2026-03-01
+Fireball Cinnamon Whisky,BWS,40.18,2026-03-15
+Fireball Cinnamon Whisky,BWS,36.18,2026-03-31
+Fireball Cinnamon Whisky,Liquorland,43.88,2026-02-01
+Fireball Cinnamon Whisky,Liquorland,41.05,2026-02-15
+Fireball Cinnamon Whisky,Liquorland,40.64,2026-03-01
+Fireball Cinnamon Whisky,Liquorland,40.23,2026-03-15
+Fireball Cinnamon Whisky,Liquorland,39.23,2026-03-31
+Fireball Cinnamon Whisky,First Choice,38.99,2026-02-01
+Fireball Cinnamon Whisky,First Choice,38.2,2026-02-15
+Fireball Cinnamon Whisky,First Choice,41.8,2026-03-01
+Fireball Cinnamon Whisky,First Choice,41.41,2026-03-15
+Fireball Cinnamon Whisky,First Choice,38.41,2026-03-31
