@@ -1,0 +1,13 @@
+whisky,expression,brand,age,abv,size_ml,store,state,price_aud,in_stock,product_url,last_seen,source
+Glenfiddich 12,12 Year Old,Glenfiddich,12,40,700,Dan Murphy's,VIC,74.95,true,https://example.com/glenfiddich12-dan,2026-03-31,manual
+Glenfiddich 12,12 Year Old,Glenfiddich,12,40,700,BWS,VIC,106.00,true,https://example.com/glenfiddich12-bws,2026-03-31,manual
+Glenfiddich 12,12 Year Old,Glenfiddich,12,40,700,Liquorland,VIC,104.00,true,https://example.com/glenfiddich12-liquorland,2026-03-31,manual
+The Macallan 12,Double Cask,The Macallan,12,40,700,Dan Murphy's,VIC,139.95,true,https://example.com/macallan12-dan,2026-03-31,manual
+The Macallan 12,Double Cask,The Macallan,12,40,700,BWS,VIC,140.00,true,https://example.com/macallan12-bws,2026-03-31,manual
+The Macallan 18,Double Cask,The Macallan,18,43,700,Nicks Wine Merchants,VIC,499.00,true,https://example.com/macallan18-nicks,2026-03-31,manual
+Lagavulin 16,16 Year Old,Lagavulin,16,43,700,Dan Murphy's,VIC,159.99,true,https://example.com/lagavulin16-dan,2026-03-31,manual
+Lagavulin 16,16 Year Old,Lagavulin,16,43,700,First Choice Liquor,VIC,162.00,true,https://example.com/lagavulin16-fcl,2026-03-31,manual
+Ardbeg 10,10 Year Old,Ardbeg,10,46,700,My Liquor Online,NSW,109.00,true,https://example.com/ardbeg10-mlo,2026-03-31,manual
+Ardbeg 10,10 Year Old,Ardbeg,10,46,700,Dan Murphy's,VIC,114.95,true,https://example.com/ardbeg10-dan,2026-03-31,manual
+Talisker 10,10 Year Old,Talisker,10,45.8,700,Dan Murphy's,VIC,96.99,true,https://example.com/talisker10-dan,2026-03-31,manual
+Talisker 10,10 Year Old,Talisker,10,45.8,700,Boozebud,NSW,94.00,true,https://example.com/talisker10-boozebud,2026-03-31,manual
