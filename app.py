@@ -6,6 +6,122 @@ import pandas as pd
 import streamlit as st
 import altair as alt
 
+import re
+import time
+from urllib.parse import quote_plus
+import requests
+from bs4 import BeautifulSoup
+
+REQUEST_HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
+    "Accept-Language": "en-AU,en;q=0.9",
+}
+
+
+def _norm(s: str) -> str:
+    return re.sub(r"[^a-z0-9]+", " ", str(s).lower()).strip()
+
+
+def _money_values(text: str) -> list[float]:
+    vals = []
+    for m in re.finditer(r"\$\s*([0-9]{1,4}(?:\.[0-9]{2})?)", text):
+        try:
+            vals.append(float(m.group(1)))
+        except ValueError:
+            pass
+    return vals
+
+
+@st.cache_data(ttl=1800, show_spinner=False)
+def fetch_page_text(url: str) -> str:
+    if not url:
+        return ""
+    resp = requests.get(url, headers=REQUEST_HEADERS, timeout=20)
+    resp.raise_for_status()
+    soup = BeautifulSoup(resp.text, "lxml")
+    for tag in soup(["script", "style", "noscript"]):
+        tag.extract()
+    text = soup.get_text("\n", strip=True)
+    return text
+
+
+def build_search_url(store: str, whisky: str) -> str:
+    q = quote_plus(whisky)
+    if store == "Dan Murphy's":
+        return f"https://www.danmurphys.com.au/whisky/all?search={q}"
+    if store == "BWS":
+        return f"https://bws.com.au/spirits/whisky?search={q}"
+    if store == "Liquorland":
+        return f"https://www.liquorland.com.au/spirits/whisky?search={q}"
+    if store == "First Choice":
+        return f"https://www.firstchoiceliquor.com.au/spirits/whisky?search={q}"
+    return ""
+
+
+def extract_live_price_from_text(row: pd.Series, text: str) -> float | None:
+    if not text:
+        return None
+    lines = [ln.strip() for ln in text.splitlines() if ln.strip()]
+    nlines = [_norm(ln) for ln in lines]
+    tokens = [t for t in _norm(row.get("whisky", "")).split() if len(t) > 2 and t not in {"whisky", "scotch", "single", "malt", "blended", "year", "old", "yo"}]
+    expr_tokens = [t for t in _norm(row.get("expression", "")).split() if len(t) > 2 and t not in {"whisky", "scotch", "single", "malt", "blended", "year", "old", "yo"}]
+    if expr_tokens:
+        tokens.extend(expr_tokens)
+    # Keep unique order
+    seen = set(); tokens = [t for t in tokens if not (t in seen or seen.add(t))]
+
+    # 1) Find lines strongly matching the bottle and inspect nearby lines for prices
+    candidates: list[float] = []
+    for idx, ln in enumerate(nlines):
+        score = sum(t in ln for t in tokens[:6])
+        if score >= max(2, min(3, len(tokens[:6]))):
+            window = " ".join(lines[max(0, idx - 3): min(len(lines), idx + 6)])
+            vals = [v for v in _money_values(window) if 20 <= v <= 1500]
+            candidates.extend(vals[:3])
+
+    if candidates:
+        # Prefer the first reasonable number near the matching text
+        return candidates[0]
+
+    # 2) Search around the first appearance of the whisky name in raw text
+    raw = text
+    needle = row.get("whisky", "") or row.get("expression", "") or ""
+    if needle:
+        pos = raw.lower().find(str(needle).lower().split(" 700")[0])
+        if pos != -1:
+            window = raw[max(0, pos - 120): pos + 600]
+            vals = [v for v in _money_values(window) if 20 <= v <= 1500]
+            if vals:
+                return vals[0]
+
+    # 3) Fallback to first plausible price on page
+    vals = [v for v in _money_values(raw) if 20 <= v <= 1500]
+    return vals[0] if vals else None
+
+
+def refresh_live_prices(df: pd.DataFrame) -> tuple[pd.DataFrame, list[str]]:
+    refreshed = df.copy()
+    messages: list[str] = []
+    updated = 0
+    for idx, row in refreshed.iterrows():
+        url = row.get("product_url") or build_search_url(row.get("store", ""), row.get("whisky", ""))
+        try:
+            text = fetch_page_text(url)
+            price = extract_live_price_from_text(row, text)
+            if price is None:
+                messages.append(f"No price found for {row['whisky']} at {row['store']}")
+                continue
+            refreshed.at[idx, "price_aud"] = float(price)
+            refreshed.at[idx, "last_seen"] = pd.Timestamp.utcnow().strftime("%Y-%m-%d %H:%M UTC")
+            refreshed.at[idx, "source"] = "live_page_refresh"
+            updated += 1
+        except Exception as e:
+            messages.append(f"Skipped {row['whisky']} at {row['store']}: {type(e).__name__}")
+    refreshed = normalize_prices(refreshed)
+    messages.insert(0, f"Updated {updated} row(s) from retailer pages.")
+    return refreshed, messages
+
+
 APP_DIR = Path(__file__).parent
 DATA_DIR = APP_DIR / "data"
 DEFAULT_CSV = DATA_DIR / "sample_whisky_prices.csv"
@@ -337,8 +453,13 @@ def main() -> None:
     inject_css()
     default_current, default_history = load_default_data()
 
-    current_df = normalize_prices(default_current.copy())
-    history_df = prepare_history(default_history.copy())
+    if "current_df" not in st.session_state:
+        st.session_state.current_df = normalize_prices(default_current.copy())
+    if "history_df" not in st.session_state:
+        st.session_state.history_df = prepare_history(default_history.copy())
+
+    current_df = st.session_state.current_df.copy()
+    history_df = st.session_state.history_df.copy()
 
     if current_df.empty:
         st.error("No current price data found.")
@@ -381,14 +502,47 @@ def main() -> None:
     with f5:
         search_term = st.text_input("Search", placeholder="Macallan, Glenfiddich, Nikka...")
 
-    f6, f7, f8 = st.columns([2.6, 1, 1])
+    f6, f7, f8, f9 = st.columns([2.3, 0.9, 1, 1.2])
     with f6:
         focus_whisky = st.selectbox("Focus whisky", whisky_opts, index=min(8, len(whisky_opts) - 1))
     with f7:
         in_stock_only = st.toggle("In stock only", value=True)
     with f8:
         sort_by = st.selectbox("Sort matrix", ["cheapest_price", "spread", "rank_au", "whisky"])
-    st.markdown("<div class='data-note'>Prices in the bundled CSV are a starter dataset and can vary by postcode or promo. Replace them with scraped or manually corrected CSVs for live accuracy.</div></div>", unsafe_allow_html=True)
+    with f9:
+        refresh_scope = st.selectbox("Live refresh scope", ["Focus whisky only", "Filtered rows"], index=0)
+    r1, r2 = st.columns([1.2, 4])
+    with r1:
+        do_refresh = st.button("Refresh live rates", use_container_width=True)
+    with r2:
+        st.markdown("<div class='data-note'>Use live refresh to pull current page prices from the retailer sites. Results are best-effort and can still vary by postcode, membership pricing, availability, or promo rules.</div></div>", unsafe_allow_html=True)
+
+    if do_refresh:
+        to_refresh = current_df.copy()
+        to_refresh = to_refresh[to_refresh["rank_au"].fillna(999) <= rank_limit]
+        if selected_style != "All":
+            to_refresh = to_refresh[to_refresh["style"] == selected_style]
+        if selected_brand != "All":
+            to_refresh = to_refresh[to_refresh["brand"] == selected_brand]
+        if selected_stores:
+            to_refresh = to_refresh[to_refresh["store"].isin(selected_stores)]
+        if search_term:
+            to_refresh = to_refresh[to_refresh["search_text"].str.contains(search_term.lower(), na=False)]
+        if refresh_scope == "Focus whisky only":
+            to_refresh = to_refresh[to_refresh["whisky"] == focus_whisky]
+        with st.spinner(f"Refreshing {len(to_refresh)} row(s) from retailer pages..."):
+            refreshed_subset, live_messages = refresh_live_prices(to_refresh)
+        current_df = current_df.set_index(["whisky", "store", "size_ml"])
+        refreshed_subset = refreshed_subset.set_index(["whisky", "store", "size_ml"])
+        current_df.update(refreshed_subset)
+        current_df = current_df.reset_index()
+        current_df = normalize_prices(current_df)
+        st.session_state.current_df = current_df.copy()
+        if live_messages:
+            st.toast(live_messages[0])
+            with st.expander("Live refresh details"):
+                for msg in live_messages[:50]:
+                    st.write("- ", msg)
 
     filtered = current_df.copy()
     filtered = filtered[filtered["rank_au"].fillna(999) <= rank_limit]
