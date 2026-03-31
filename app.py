@@ -8,7 +8,6 @@ import altair as alt
 
 APP_DIR = Path(__file__).parent
 DATA_DIR = APP_DIR / "data"
-ASSETS_DIR = APP_DIR / "assets" / "stores"
 DEFAULT_CSV = DATA_DIR / "sample_whisky_prices.csv"
 HISTORY_CSV = DATA_DIR / "sample_price_history.csv"
 
@@ -20,153 +19,134 @@ st.set_page_config(
 )
 
 STORE_COLORS = {
-    "Dan Murphy's": "#00A651",
+    "Dan Murphy's": "#14B8A6",
     "BWS": "#F97316",
-    "Liquorland": "#2563EB",
-    "First Choice": "#7C3AED",
-    "Harry Brown": "#C9A84C",
+    "Liquorland": "#3B82F6",
+    "First Choice": "#8B5CF6",
 }
-
-
-def local_logo_html(filename: str) -> str:
-    path = ASSETS_DIR / filename
-    if not path.exists():
-        return ""
-    svg = path.read_text(encoding="utf-8")
-    return svg.replace("<svg", "<svg class='store-logo-svg'", 1)
-
 
 STORE_META = {
     "Dan Murphy's": {
         "url": "https://www.danmurphys.com.au/whisky/all",
-        "logo_html": local_logo_html("dan_murphys.svg"),
+        "wordmark": "Dan Murphy's",
     },
     "BWS": {
         "url": "https://bws.com.au/spirits/whisky",
-        "logo_html": local_logo_html("bws.svg"),
+        "wordmark": "BWS",
     },
     "Liquorland": {
         "url": "https://www.liquorland.com.au/spirits/whisky",
-        "logo_html": local_logo_html("liquorland.svg"),
+        "wordmark": "Liquorland",
     },
     "First Choice": {
         "url": "https://www.firstchoiceliquor.com.au/spirits/whisky",
-        "logo_html": local_logo_html("first_choice.svg"),
-    },
-    "Harry Brown": {
-        "url": "https://harrybrown.com.au/category/spirits-and-liqueur",
-        "logo_html": local_logo_html("harry_brown.svg"),
+        "wordmark": "First Choice",
     },
 }
-
-CSS = """
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=DM+Sans:wght@300;400;500;600;700&display=swap');
-
-[data-testid="stSidebar"], [data-testid="collapsedControl"], footer, #MainMenu, header {display:none !important;}
-
-* { font-family: 'DM Sans', sans-serif; }
-
-.stApp {
-    background: #05080f;
-    background-image:
-        radial-gradient(ellipse 80% 50% at 20% -10%, rgba(14,165,92,0.08) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 40% at 80% 110%, rgba(124,58,237,0.07) 0%, transparent 60%);
-}
-
-.block-container { max-width: 1440px; padding: 0.5rem 1.5rem 3rem 1.5rem; }
-
-.site-header {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 1.1rem 0 .9rem 0;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-    margin-bottom: 1.4rem;
-}
-.site-logo { display: flex; align-items: center; gap: .75rem; }
-.site-logo-icon { font-size: 1.7rem; line-height: 1; }
-.site-logo-text { font-family: 'Playfair Display', serif; font-size: 1.55rem; font-weight: 800; color: #f8fafc; letter-spacing: -0.02em; }
-.site-logo-text span { color: #C9A84C; }
-.header-meta { display: flex; gap: 1.5rem; font-size: .83rem; color: #64748b; }
-.header-meta b { color: #94a3b8; }
-
-.stats-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: .75rem; margin-bottom: 1.2rem; }
-.stat-card { background: rgba(255,255,255,0.035); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 1.05rem 1.15rem; position: relative; overflow: hidden; }
-.stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; border-radius: 16px 16px 0 0; }
-.stat-card.green::before { background: linear-gradient(90deg, #00A651, transparent); }
-.stat-card.amber::before { background: linear-gradient(90deg, #C9A84C, transparent); }
-.stat-card.blue::before { background: linear-gradient(90deg, #3B82F6, transparent); }
-.stat-card.purple::before { background: linear-gradient(90deg, #8B5CF6, transparent); }
-.stat-label { font-size: .76rem; color: #64748b; text-transform: uppercase; letter-spacing: .1em; font-weight: 600; margin-bottom: .4rem; }
-.stat-value { font-family: 'Playfair Display', serif; font-size: 1.85rem; font-weight: 700; color: #f1f5f9; line-height: 1; }
-.stat-sub { font-size: .76rem; color: #475569; margin-top: .3rem; }
-
-.best-deal-banner {
-    background: linear-gradient(135deg, rgba(14,165,92,0.12) 0%, rgba(201,168,76,0.08) 50%, rgba(5,8,15,0.8) 100%);
-    border: 1px solid rgba(14,165,92,0.25); border-radius: 20px; padding: 1.2rem 1.5rem;
-    margin-bottom: 1.25rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
-}
-.bd-tag { background: rgba(14,165,92,0.15); border: 1px solid rgba(14,165,92,0.3); color: #4ade80; font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .14em; padding: .3rem .65rem; border-radius: 999px; white-space: nowrap; }
-.bd-name { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: #f1f5f9; margin-top: .45rem; }
-.bd-sub { font-size: .83rem; color: #94a3b8; margin-top: .15rem; }
-.bd-price { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 900; color: #4ade80; letter-spacing: -.03em; white-space: nowrap; }
-.bd-per { font-size: .75rem; color: #64748b; margin-top: .15rem; text-align: right; }
-.bd-cta { display: inline-flex; align-items: center; gap: .45rem; background: rgba(14,165,92,0.18); border: 1px solid rgba(14,165,92,0.35); color: #4ade80; font-weight: 700; font-size: .85rem; padding: .6rem 1.1rem; border-radius: 10px; text-decoration: none; white-space: nowrap; }
-.bd-cta:hover { background: rgba(14,165,92,0.28); }
-
-.stores-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: .6rem; margin-bottom: 1.4rem; }
-.store-pill { display: flex; align-items: center; justify-content: center; gap: .6rem; padding: .7rem .8rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 14px; text-decoration: none; transition: all .2s; min-height: 62px; }
-.store-pill:hover { background: rgba(255,255,255,0.065); border-color: rgba(255,255,255,0.13); transform: translateY(-1px); }
-.store-pill-name { font-size: .8rem; font-weight: 700; }
-.store-logo-wrap { height: 28px; display:flex; align-items:center; }
-.store-logo-svg { max-height: 24px; width: auto; max-width: 100px; }
-
-.filter-panel { background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.07); border-radius: 18px; padding: .9rem 1.1rem 1rem 1.1rem; margin-bottom: 1.25rem; }
-.filter-title { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: #475569; margin-bottom: .75rem; }
-
-.metric-card { background: rgba(255,255,255,0.035); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: .95rem 1.05rem .9rem 1.05rem; min-height: 108px; }
-.metric-label { font-size: .76rem; color: #64748b; text-transform: uppercase; letter-spacing: .1em; font-weight: 600; }
-.metric-value { font-family: 'Playfair Display', serif; font-size: 1.7rem; color: #f1f5f9; font-weight: 700; margin-top: .25rem; line-height: 1; }
-.metric-help { font-size: .76rem; color: #475569; margin-top: .3rem; }
-
-.offer-card { background: rgba(10,14,26,0.85); border: 1px solid rgba(255,255,255,0.07); border-radius: 20px; padding: 1.1rem; min-height: 240px; display: flex; flex-direction: column; }
-.offer-card.best { border-color: rgba(74,222,128,0.35); background: linear-gradient(180deg, rgba(14,165,92,0.07), rgba(10,14,26,0.9)); }
-.offer-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: .7rem; }
-.store-chip { font-size: .7rem; font-weight: 800; border-radius: 999px; padding: .22rem .52rem; }
-.best-badge { font-size: .68rem; font-weight: 800; color: #4ade80; background: rgba(74,222,128,0.12); border: 1px solid rgba(74,222,128,0.25); border-radius: 999px; padding: .18rem .5rem; }
-.offer-price { font-family: 'Playfair Display', serif; font-size: 1.9rem; font-weight: 800; color: #f1f5f9; line-height: 1; margin-bottom: .2rem; }
-.offer-per { font-size: .78rem; color: #64748b; margin-bottom: .75rem; }
-.offer-name { font-size: .9rem; font-weight: 700; color: #e2e8f0; margin-bottom: .15rem; }
-.offer-brand { font-size: .78rem; color: #64748b; }
-.offer-pills { display: flex; gap: .35rem; flex-wrap: wrap; margin-top: auto; padding-top: .8rem; }
-.pill { display: inline-block; padding: .18rem .5rem; border-radius: 999px; font-size: .7rem; font-weight: 700; background: rgba(255,255,255,0.06); color: #94a3b8; border: 1px solid rgba(255,255,255,0.07); }
-.pill.green { background: rgba(74,222,128,0.1); color: #4ade80; border-color: rgba(74,222,128,0.2); }
-.pill.red { background: rgba(239,68,68,0.1); color: #f87171; border-color: rgba(239,68,68,0.2); }
-.offer-link { font-size: .78rem; color: #60a5fa; text-decoration: none; font-weight: 700; margin-top: .6rem; display: inline-block; }
-.offer-link:hover { text-decoration: underline; }
-
-.section-head { margin: .2rem 0 .9rem 0; }
-.section-title { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; color: #f1f5f9; line-height: 1.2; }
-.section-sub { font-size: .8rem; color: #475569; margin-top: .2rem; }
-
-div[data-testid="stDataFrame"] { border: 1px solid rgba(255,255,255,0.07) !important; border-radius: 14px !important; overflow: hidden !important; }
-div[data-testid="stDownloadButton"] button, div.stButton > button { border-radius: 10px !important; font-weight: 700 !important; }
-
-.stSelectbox label, .stMultiSelect label, .stSlider label, .stTextInput label, .stToggle label {
-    color: #64748b !important; font-size: .78rem !important; font-weight: 600 !important;
-    text-transform: uppercase !important; letter-spacing: .08em !important;
-}
-
-.gap { height: .75rem; }
-@media (max-width: 900px) {
-    .stats-bar { grid-template-columns: repeat(2, 1fr); }
-    .stores-row { grid-template-columns: repeat(3, 1fr); }
-}
-</style>
-"""
 
 
 def inject_css() -> None:
-    st.markdown(CSS, unsafe_allow_html=True)
+    st.markdown(
+        """
+        <style>
+        [data-testid="stSidebar"], [data-testid="collapsedControl"], footer, #MainMenu, header {display:none !important;}
+        .stApp {
+            background:
+                radial-gradient(circle at top left, rgba(249,115,22,0.12), transparent 20%),
+                radial-gradient(circle at top right, rgba(59,130,246,0.10), transparent 22%),
+                linear-gradient(180deg, #060b16 0%, #091120 55%, #09101a 100%);
+        }
+        .block-container {max-width: 1420px; padding-top: 1rem; padding-bottom: 2.5rem;}
+        h1,h2,h3 {letter-spacing: -0.03em;}
+        .hero {
+            background:
+                radial-gradient(circle at 85% 15%, rgba(249,115,22,0.26), transparent 22%),
+                linear-gradient(135deg, rgba(15,23,42,0.96) 0%, rgba(15,23,42,0.98) 48%, rgba(66,32,14,0.96) 100%);
+            border: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 30px 90px rgba(0,0,0,.36);
+            border-radius: 30px;
+            padding: 2.1rem 2.1rem 1.9rem 2.1rem;
+            color: white;
+            overflow: hidden;
+        }
+        .eyebrow {font-size: .8rem; letter-spacing: .18em; text-transform: uppercase; color: #f59e0b; font-weight: 800; margin-bottom: .8rem;}
+        .hero h1 {margin: 0; font-size: 3.1rem; line-height: 1.02;}
+        .hero-copy {margin: .9rem 0 0 0; color: #d1d5db; font-size: 1.03rem; max-width: 820px;}
+        .hero-badges {margin-top: 1rem; display:flex; gap:.6rem; flex-wrap:wrap;}
+        .badge {padding:.38rem .72rem; border-radius:999px; font-size:.82rem; font-weight:700; background:rgba(255,255,255,.08); color:#f8fafc; border:1px solid rgba(255,255,255,.08);}
+        .hero-kicker {margin-top: 1.25rem; display:flex; gap:1rem; flex-wrap:wrap; color:#cbd5e1; font-size:.92rem;}
+        .hero-kicker b {color:white;}
+        .panel {
+            margin-top: 1rem;
+            background: rgba(10,17,30,.78);
+            border: 1px solid rgba(255,255,255,.08);
+            backdrop-filter: blur(16px);
+            box-shadow: 0 18px 40px rgba(0,0,0,.18);
+            border-radius: 24px;
+            padding: 1rem 1rem 1.1rem 1rem;
+        }
+        .panel-title {font-size: 1rem; font-weight: 800; color: #f8fafc; margin-bottom: .9rem;}
+        .metric-card {
+            background: linear-gradient(180deg, rgba(255,255,255,.065), rgba(255,255,255,.03));
+            border: 1px solid rgba(255,255,255,.09);
+            border-radius: 22px;
+            padding: 1rem 1rem .9rem 1rem;
+            min-height: 122px;
+        }
+        .metric-label {font-size:.88rem; color:#94a3b8;}
+        .metric-value {font-size:2rem; color:#f8fafc; font-weight:800; margin-top:.25rem; line-height:1.05;}
+        .metric-help {font-size:.9rem; color:#cbd5e1; margin-top:.35rem;}
+        .best-deal-card {
+            background: linear-gradient(135deg, rgba(249,115,22,.15), rgba(15,23,42,.75));
+            border: 1px solid rgba(249,115,22,.35);
+            border-radius: 22px;
+            padding: 1.1rem 1.15rem;
+            min-height: 162px;
+        }
+        .best-deal-label {font-size:.8rem; letter-spacing:.14em; text-transform:uppercase; color:#fbbf24; font-weight:800;}
+        .best-deal-price {font-size:2.2rem; font-weight:900; color:#fff; line-height:1; margin:.5rem 0 .35rem 0;}
+        .best-deal-name {font-size:1.03rem; font-weight:800; color:#fff;}
+        .best-deal-copy {font-size:.94rem; color:#d1d5db; margin-top:.35rem;}
+        .store-pill {
+            display:inline-flex; align-items:center; justify-content:center; width:100%;
+            padding:.68rem .95rem; border-radius:16px; font-weight:800; color:white;
+            text-decoration:none; border:1px solid rgba(255,255,255,.08); box-shadow:0 10px 30px rgba(0,0,0,.14);
+        }
+        .store-pill:hover {filter: brightness(1.05);}
+        .section-title {font-size:1.22rem; font-weight:800; margin: .2rem 0 .3rem 0; color:#f8fafc;}
+        .section-subtitle {font-size:.92rem; color:#94a3b8; margin: 0 0 .95rem 0;}
+        .offer-card {
+            background: linear-gradient(180deg, rgba(15,23,42,.85), rgba(17,24,39,.96));
+            border: 1px solid rgba(255,255,255,.08);
+            border-radius: 24px;
+            padding: 1.05rem;
+            min-height: 272px;
+            box-shadow: 0 18px 44px rgba(0,0,0,.22);
+        }
+        .offer-card.best {border-color: rgba(249,115,22,.52); box-shadow: 0 18px 50px rgba(249,115,22,.14);}
+        .offer-top {display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-bottom:.8rem;}
+        .store-name {font-size:1.05rem; font-weight:800; color:#fff;}
+        .store-chip {font-size:.78rem; font-weight:800; border-radius:999px; padding:.28rem .58rem; color:white;}
+        .price {font-size:2rem; font-weight:800; color:#ffffff; letter-spacing:-0.03em;}
+        .subtle {color:#cbd5e1; font-size:.94rem;}
+        .muted {color:#94a3b8; font-size:.85rem;}
+        .pills {display:flex; gap:.45rem; flex-wrap:wrap; margin-top:.9rem;}
+        .pill {display:inline-block; padding:.22rem .56rem; border-radius:999px; font-size:.78rem; font-weight:700; background:rgba(255,255,255,.08); color:#e5e7eb; border:1px solid rgba(255,255,255,.08);}
+        .offer-link {display:inline-block; margin-top:1rem; color:#93c5fd; text-decoration:none; font-weight:700;}
+        .offer-link:hover {text-decoration:underline;}
+        .spacer {height: .55rem;}
+        .data-note {font-size:.86rem; color:#94a3b8; margin-top:.55rem;}
+        .compact-note {font-size:.83rem; color:#94a3b8; margin-top:.2rem;}
+        div[data-testid="stDataFrame"] {border: 1px solid rgba(255,255,255,.08); border-radius: 18px; overflow: hidden;}
+        div[data-testid="stLinkButton"] a, div.stButton > button, div[data-testid="stDownloadButton"] button {
+            border-radius: 14px !important; font-weight: 700 !important;
+        }
+        .stTabs [data-baseweb="tab-list"] {gap: 0.5rem;}
+        .stTabs [data-baseweb="tab"] {background: rgba(255,255,255,.03); border-radius: 999px; padding-inline: .9rem;}
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
 
 
 @st.cache_data
@@ -202,10 +182,10 @@ def leaderboard(filtered: pd.DataFrame) -> pd.DataFrame:
 
 @st.cache_data
 def comparison_table(filtered: pd.DataFrame) -> pd.DataFrame:
-    pivot = filtered.pivot_table(
-        index=["rank_au", "whisky", "brand", "size_ml"],
-        columns="store", values="price_aud", aggfunc="min"
-    ).reset_index()
+    pivot = (
+        filtered.pivot_table(index=["rank_au", "whisky", "brand", "size_ml"], columns="store", values="price_aud", aggfunc="min")
+        .reset_index()
+    )
     store_cols = [c for c in pivot.columns if c not in ["rank_au", "whisky", "brand", "size_ml"]]
     if store_cols:
         pivot["cheapest_price"] = pivot[store_cols].min(axis=1)
@@ -229,15 +209,30 @@ def prepare_history(history_df: pd.DataFrame) -> pd.DataFrame:
 def normalize_prices(df: pd.DataFrame) -> pd.DataFrame:
     if df.empty:
         return df
+
     expected = {
-        "rank_au": None, "whisky": "", "expression": "", "brand": "", "style": "",
-        "age": "", "abv": "", "size_ml": 700, "store": "", "state": "AU",
-        "price_aud": 0.0, "in_stock": True, "product_url": "", "store_url": "",
-        "store_logo": "", "last_seen": "", "source": "manual", "popularity_group": "",
+        "rank_au": None,
+        "whisky": "",
+        "expression": "",
+        "brand": "",
+        "style": "",
+        "age": "",
+        "abv": "",
+        "size_ml": 700,
+        "store": "",
+        "state": "AU",
+        "price_aud": 0.0,
+        "in_stock": True,
+        "product_url": "",
+        "store_url": "",
+        "last_seen": "",
+        "source": "manual",
+        "popularity_group": "",
     }
     for col, default in expected.items():
         if col not in df.columns:
             df[col] = default
+
     df["price_aud"] = pd.to_numeric(df["price_aud"], errors="coerce")
     df["size_ml"] = pd.to_numeric(df["size_ml"], errors="coerce")
     df["rank_au"] = pd.to_numeric(df["rank_au"], errors="coerce")
@@ -245,111 +240,103 @@ def normalize_prices(df: pd.DataFrame) -> pd.DataFrame:
     df["price_per_100ml"] = (df["price_aud"] / df["size_ml"]) * 100
     df["search_text"] = (
         df[["whisky", "expression", "brand", "store", "state", "style"]]
-        .fillna("").astype(str).agg(" ".join, axis=1).str.lower()
+        .fillna("")
+        .astype(str)
+        .agg(" ".join, axis=1)
+        .str.lower()
     )
     return df.dropna(subset=["price_aud", "size_ml"])
 
 
-def render_logo(store_name: str) -> str:
-    html = STORE_META.get(store_name, {}).get("logo_html", "")
-    if html:
-        return f"<div class='store-logo-wrap'>{html}</div>"
-    return f"<div style='font-weight:800;color:#f8fafc;font-size:.8rem'>{store_name}</div>"
-
-
-def stores_row() -> None:
-    cards = []
-    for store_name, meta in STORE_META.items():
-        color = STORE_COLORS.get(store_name, "#475569")
-        cards.append(
-            f"<a class='store-pill' href='{meta['url']}' target='_blank'>"
-            f"{render_logo(store_name)}"
-            f"<span class='store-pill-name' style='color:{color}'>{store_name}</span>"
-            f"</a>"
-        )
-    st.markdown(f"<div class='stores-row'>{''.join(cards)}</div>", unsafe_allow_html=True)
-
-
-def site_header(tracked: int, stores_count: int, avg_spread: float) -> None:
+def metric_card(title: str, value: str, help_text: str = "") -> None:
     st.markdown(
-        f"<div class='site-header'>"
-        f"<div class='site-logo'>"
-        f"<span class='site-logo-icon'>🥃</span>"
-        f"<span class='site-logo-text'>Booze<span>Deals</span> AU</span>"
-        f"</div>"
-        f"<div class='header-meta'>"
-        f"<span><b>{tracked}</b> whiskies tracked</span>"
-        f"<span><b>{stores_count}</b> retailers</span>"
-        f"<span>Avg spread <b>${avg_spread:,.2f}</b></span>"
-        f"</div>"
-        f"</div>",
+        f"""
+        <div class='metric-card'>
+            <div class='metric-label'>{title}</div>
+            <div class='metric-value'>{value}</div>
+            <div class='metric-help'>{help_text}</div>
+        </div>
+        """,
         unsafe_allow_html=True,
     )
 
 
-def best_deal_banner(best_row: pd.Series) -> None:
-    link = best_row.get("product_url") or STORE_META.get(best_row["store"], {}).get("url") or "#"
-    st.markdown(
-        f"<div class='best-deal-banner'>"
-        f"<div>"
-        f"<span class='bd-tag'>🔥 Best deal today</span>"
-        f"<div class='bd-name'>{best_row['whisky']}</div>"
-        f"<div class='bd-sub'>{best_row['store']} · {int(best_row['size_ml'])}mL</div>"
-        f"</div>"
-        f"<div style='text-align:right'>"
-        f"<div class='bd-price'>${best_row['price_aud']:,.2f}</div>"
-        f"<div class='bd-per'>${best_row['price_per_100ml']:,.2f} / 100mL</div>"
-        f"</div>"
-        f"<a class='bd-cta' href='{link}' target='_blank'>Go to deal ↗</a>"
-        f"</div>",
-        unsafe_allow_html=True,
-    )
-
-
-def stats_bar(tracked: int, cheapest: pd.Series, avg_price: float, avg_spread: float, stores_count: int) -> None:
-    name = cheapest['whisky']
-    name_short = name[:26] + "…" if len(name) > 26 else name
-    st.markdown(
-        f"<div class='stats-bar'>"
-        f"<div class='stat-card green'><div class='stat-label'>Lowest price</div><div class='stat-value'>${cheapest['price_aud']:,.2f}</div><div class='stat-sub'>{name_short}</div></div>"
-        f"<div class='stat-card amber'><div class='stat-label'>Avg shelf price</div><div class='stat-value'>${avg_price:,.0f}</div><div class='stat-sub'>Across filtered results</div></div>"
-        f"<div class='stat-card blue'><div class='stat-label'>Whiskies tracked</div><div class='stat-value'>{tracked}</div><div class='stat-sub'>Across {stores_count} retailers</div></div>"
-        f"<div class='stat-card purple'><div class='stat-label'>Avg store spread</div><div class='stat-value'>${avg_spread:,.2f}</div><div class='stat-sub'>High vs low gap</div></div>"
-        f"</div>",
-        unsafe_allow_html=True,
-    )
+def store_pill(store_name: str) -> str:
+    color = STORE_COLORS.get(store_name, "#475569")
+    return f"<span class='store-pill' style='background:linear-gradient(135deg, {color}, {color}CC)'>{STORE_META.get(store_name, {}).get('wordmark', store_name)}</span>"
 
 
 def store_offer_card(row: pd.Series, best_price: float) -> None:
     link = row.get("product_url") or STORE_META.get(row["store"], {}).get("url") or "#"
     chip_color = STORE_COLORS.get(row["store"], "#475569")
-    is_best = float(row["price_aud"]) == float(best_price)
-    best_class = " best" if is_best else ""
-    in_stock = bool(row["in_stock"])
-    stock_class = "green" if in_stock else "red"
-    stock_label = "In stock" if in_stock else "Unavailable"
-    best_badge = "<span class='best-badge'>★ Best price</span>" if is_best else ""
+    best_class = " best" if abs(float(row["price_aud"]) - float(best_price)) < 0.001 else ""
+    stock = "In stock" if bool(row["in_stock"]) else "Availability unknown"
     st.markdown(
-        f"<div class='offer-card{best_class}'>"
-        f"<div class='offer-top'>"
-        f"{render_logo(row['store'])}"
-        f"<div style='display:flex;align-items:center;gap:.4rem'>{best_badge}"
-        f"<span class='store-chip' style='background:{chip_color}22;color:{chip_color};border:1px solid {chip_color}44'>{row['store']}</span>"
-        f"</div></div>"
-        f"<div class='offer-price'>${row['price_aud']:,.2f}</div>"
-        f"<div class='offer-per'>${row['price_per_100ml']:,.2f} per 100mL</div>"
-        f"<div class='offer-name'>{row['whisky']}</div>"
-        f"<div class='offer-brand'>{row['brand']} · {row['style']} · {int(row['size_ml'])}mL</div>"
-        f"<div class='offer-pills'><span class='pill {stock_class}'>{stock_label}</span><span class='pill'>Seen {row['last_seen']}</span></div>"
-        f"<a class='offer-link' href='{link}' target='_blank'>View listing ↗</a>"
-        f"</div>",
+        f"""
+        <div class='offer-card{best_class}'>
+            <div class='offer-top'>
+                <div class='store-name'>{row['store']}</div>
+                <span class='store-chip' style='background:{chip_color}'>{STORE_META.get(row['store'], {}).get('wordmark', row['store'])}</span>
+            </div>
+            <div class='price'>${row['price_aud']:,.2f}</div>
+            <div class='subtle'>${row['price_per_100ml']:,.2f} per 100mL</div>
+            <div class='pills'>
+                <span class='pill'>{stock}</span>
+                <span class='pill'>{int(row['size_ml'])}mL</span>
+                <span class='pill'>Seen {row['last_seen']}</span>
+            </div>
+            <div style='margin-top:1rem;color:#e5e7eb;font-weight:700'>{row['whisky']}</div>
+            <div class='muted'>{row['brand']} • {row['style']}</div>
+            <a class='offer-link' href='{link}' target='_blank'>Open store listing ↗</a>
+        </div>
+        """,
         unsafe_allow_html=True,
     )
+
+
+def render_hero(best_row: pd.Series, tracked: int, avg_spread: float) -> None:
+    st.markdown(
+        f"""
+        <div class='hero'>
+            <div class='eyebrow'>Premium Whisky Price Tracker</div>
+            <h1>BoozeDeals AU</h1>
+            <div class='hero-copy'>Compare a curated watchlist of 50 high-demand whiskies across Australia's major chains, jump straight to store pages, and spot the best value bottle in seconds.</div>
+            <div class='hero-badges'>
+                <span class='badge'>Clickable store shortcuts</span>
+                <span class='badge'>Best deal today</span>
+                <span class='badge'>Top 50 watchlist</span>
+                <span class='badge'>Price spread tracking</span>
+            </div>
+            <div class='hero-kicker'>
+                <span><b>{tracked}</b> whiskies tracked</span>
+                <span><b>{len(STORE_META)}</b> major retailers</span>
+                <span><b>${avg_spread:,.2f}</b> average spread</span>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def best_deal_card(best_row: pd.Series) -> None:
+    st.markdown(
+        f"""
+        <div class='best-deal-card'>
+            <div class='best-deal-label'>Best deal today</div>
+            <div class='best-deal-price'>${best_row['price_aud']:,.2f}</div>
+            <div class='best-deal-name'>{best_row['whisky']}</div>
+            <div class='best-deal-copy'>Currently cheapest at {best_row['store']} · ${best_row['price_per_100ml']:,.2f} per 100mL · {int(best_row['size_ml'])}mL bottle.</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    st.link_button("Open deal ↗", best_row.get("product_url") or STORE_META.get(best_row["store"], {}).get("url") or "#", use_container_width=True)
 
 
 def main() -> None:
     inject_css()
     default_current, default_history = load_default_data()
+
     current_df = normalize_prices(default_current.copy())
     history_df = prepare_history(default_history.copy())
 
@@ -362,13 +349,21 @@ def main() -> None:
     baseline_best_row = current_df.sort_values("price_aud").iloc[0]
     baseline_spread = baseline_compare["spread"].dropna().mean() if "spread" in baseline_compare else 0.0
 
-    site_header(baseline_board["whisky"].nunique(), current_df["store"].nunique(), baseline_spread)
-    best_deal_banner(baseline_best_row)
-    stores_row()
+    hero_col, deal_col = st.columns([1.65, 1], gap="large")
+    with hero_col:
+        render_hero(baseline_best_row, baseline_board["whisky"].nunique(), baseline_spread)
+    with deal_col:
+        best_deal_card(baseline_best_row)
 
-    # ── FILTERS ──
-    st.markdown("<div class='filter-panel'><div class='filter-title'>Refine the comparison</div>", unsafe_allow_html=True)
-    f1, f2, f3, f4, f5 = st.columns([1, 1, 1.4, 1.1, 1.1])
+    st.markdown("<div class='section-title' style='margin-top:1rem'>Jump to a store</div>", unsafe_allow_html=True)
+    logo_cols = st.columns(len(STORE_META))
+    for col, (store_name, meta) in zip(logo_cols, STORE_META.items()):
+        with col:
+            st.markdown(store_pill(store_name), unsafe_allow_html=True)
+            st.link_button(f"Open {store_name} ↗", meta["url"], use_container_width=True)
+
+    st.markdown("<div class='panel'><div class='panel-title'>Refine the comparison</div>", unsafe_allow_html=True)
+    f1, f2, f3, f4, f5 = st.columns([1, 1, 1.25, 1.05, 1.15])
     styles = ["All"] + sorted(x for x in current_df["style"].dropna().astype(str).unique() if x)
     brands = ["All"] + sorted(x for x in current_df["brand"].dropna().astype(str).unique() if x)
     stores = sorted(x for x in current_df["store"].dropna().astype(str).unique() if x)
@@ -382,20 +377,19 @@ def main() -> None:
     with f3:
         selected_stores = st.multiselect("Stores", stores, default=stores)
     with f4:
-        rank_limit = st.slider("Top N whiskies", min_value=10, max_value=max_rank, value=max_rank, step=5)
+        rank_limit = st.slider("Top-ranked whiskies", min_value=10, max_value=max_rank, value=max_rank, step=5)
     with f5:
-        search_term = st.text_input("Search", placeholder="Macallan, Nikka, Lark…")
+        search_term = st.text_input("Search", placeholder="Macallan, Glenfiddich, Nikka...")
 
-    f6, f7, f8 = st.columns([2.5, 1, 1])
+    f6, f7, f8 = st.columns([2.6, 1, 1])
     with f6:
-        focus_whisky = st.selectbox("Focus bottle (store comparison)", whisky_opts, index=min(6, len(whisky_opts) - 1))
+        focus_whisky = st.selectbox("Focus whisky", whisky_opts, index=min(8, len(whisky_opts) - 1))
     with f7:
         in_stock_only = st.toggle("In stock only", value=True)
     with f8:
-        sort_by = st.selectbox("Sort matrix by", ["cheapest_price", "spread", "rank_au", "whisky"])
-    st.markdown("</div>", unsafe_allow_html=True)
+        sort_by = st.selectbox("Sort matrix", ["cheapest_price", "spread", "rank_au", "whisky"])
+    st.markdown("<div class='data-note'>Prices in the bundled CSV are a starter dataset and can vary by postcode or promo. Replace them with scraped or manually corrected CSVs for live accuracy.</div></div>", unsafe_allow_html=True)
 
-    # ── FILTER DATA ──
     filtered = current_df.copy()
     filtered = filtered[filtered["rank_au"].fillna(999) <= rank_limit]
     if selected_style != "All":
@@ -423,98 +417,86 @@ def main() -> None:
     avg_spread = compare["spread"].dropna().mean() if "spread" in compare else 0.0
     tracked = board["whisky"].nunique()
 
-    stats_bar(tracked, cheapest_row, avg_price, avg_spread, filtered["store"].nunique())
+    c1, c2, c3, c4 = st.columns(4)
+    with c1:
+        metric_card("Tracked whiskies", f"{tracked}", f"Across {filtered['store'].nunique()} stores")
+    with c2:
+        metric_card("Cheapest live bottle", f"${cheapest_row['price_aud']:,.2f}", f"{cheapest_row['whisky']} at {cheapest_row['store']}")
+    with c3:
+        metric_card("Average shelf price", f"${avg_price:,.2f}", "Based on current filtered results")
+    with c4:
+        metric_card("Average store spread", f"${avg_spread:,.2f}", "Gap between lowest and highest current store price")
 
-    # ── FOCUS BOTTLE CARDS ──
-    st.markdown(
-        f"<div class='section-head'>"
-        f"<div class='section-title'>Store comparison — {focus_whisky}</div>"
-        f"<div class='section-sub'>All current store listings · best price highlighted · select a different bottle above</div>"
-        f"</div>",
-        unsafe_allow_html=True,
-    )
-    offer_cols = st.columns(min(5, max(1, len(focus_rows))))
+    st.markdown("<div class='spacer'></div>", unsafe_allow_html=True)
+    st.markdown("<div class='section-title'>Store comparison for your focus bottle</div><div class='section-subtitle'>Direct links, current visible prices, and the cheapest store highlighted.</div>", unsafe_allow_html=True)
+    offer_cols = st.columns(min(4, max(1, len(focus_rows))))
     best_focus_price = float(focus_rows["price_aud"].min())
     for col, (_, row) in zip(offer_cols, focus_rows.iterrows()):
         with col:
             store_offer_card(row, best_focus_price)
 
-    st.markdown("<div class='gap'></div>", unsafe_allow_html=True)
-
-    # ── TABS ──
-    overview_tab, compare_tab, history_tab = st.tabs(["📋 Leaderboard & Chart", "📊 Price Matrix", "📈 Price History"])
+    overview_tab, compare_tab, history_tab = st.tabs(["Overview", "Comparison matrix", "Price history"])
 
     with overview_tab:
-        left, right = st.columns([1.05, 0.95])
+        left, right = st.columns([1.1, 0.9])
         with left:
-            st.markdown(
-                "<div class='section-head'><div class='section-title'>Leaderboard</div>"
-                "<div class='section-sub'>Best current store price for each whisky in the watchlist.</div></div>",
-                unsafe_allow_html=True,
-            )
+            st.markdown("<div class='section-title'>Top 50 leaderboard</div><div class='section-subtitle'>Best currently visible store price for each whisky in the watchlist.</div>", unsafe_allow_html=True)
             show_board = board.copy()
-            show_board["best_price"] = show_board["best_price"].map(lambda x: f"${x:,.2f}")
-            show_board["best_per_100ml"] = show_board["best_per_100ml"].map(lambda x: f"${x:,.2f}")
             st.dataframe(
                 show_board,
                 use_container_width=True,
                 hide_index=True,
+                column_order=["rank_au", "whisky", "brand", "style", "best_store", "best_price", "best_per_100ml", "product_url"],
                 column_config={
-                    "product_url": st.column_config.LinkColumn("Store link", display_text="Open ↗"),
-                    "rank_au": st.column_config.NumberColumn("Rank", format="%d"),
-                    "best_store": "Best store",
-                    "best_price": "Best price",
-                    "best_per_100ml": "/ 100mL",
+                    "rank_au": st.column_config.NumberColumn("AU rank", format="%d"),
+                    "best_store": "Cheapest store",
+                    "best_price": st.column_config.NumberColumn("Best price", format="$%.2f"),
+                    "best_per_100ml": st.column_config.NumberColumn("Best / 100mL", format="$%.2f"),
+                    "product_url": st.column_config.LinkColumn("Store link", display_text="Open"),
                 },
             )
         with right:
-            st.markdown(
-                "<div class='section-head'><div class='section-title'>Price chart</div>"
-                "<div class='section-sub'>Top 20 by rank — lowest current price.</div></div>",
-                unsafe_allow_html=True,
-            )
+            st.markdown("<div class='section-title'>Best-price chart</div><div class='section-subtitle'>Top 20 whiskies by rank with the lowest current shelf price shown.</div>", unsafe_allow_html=True)
             chart_df = board.head(20).copy()
             chart = (
                 alt.Chart(chart_df)
-                .mark_bar(cornerRadiusTopRight=5, cornerRadiusBottomRight=5)
+                .mark_bar(cornerRadiusTopRight=6, cornerRadiusBottomRight=6)
                 .encode(
                     x=alt.X("best_price:Q", title="Best price (AUD)"),
-                    y=alt.Y("whisky:N", sort="-x", title=None),
-                    color=alt.Color(
-                        "best_store:N",
-                        scale=alt.Scale(domain=list(STORE_COLORS.keys()), range=list(STORE_COLORS.values())),
-                        legend=alt.Legend(title="Cheapest store"),
-                    ),
+                    y=alt.Y("whisky:N", sort=alt.SortField(field="rank_au", order="ascending"), title=None),
+                    color=alt.Color("best_store:N", scale=alt.Scale(domain=list(STORE_COLORS), range=list(STORE_COLORS.values())), legend=alt.Legend(title="Best store")),
                     tooltip=["rank_au", "whisky", "best_store", alt.Tooltip("best_price:Q", format=".2f")],
                 )
-                .properties(height=540)
-                .configure_view(strokeWidth=0, fill="#05080f")
-                .configure_axis(labelColor="#64748b", titleColor="#475569", gridColor="rgba(255,255,255,0.05)")
-                .configure_legend(labelColor="#94a3b8", titleColor="#64748b")
+                .properties(height=560)
             )
             st.altair_chart(chart, use_container_width=True)
 
     with compare_tab:
-        st.markdown(
-            "<div class='section-head'><div class='section-title'>Store-by-store price matrix</div>"
-            "<div class='section-sub'>Same bottle across every retailer — spot the best deal and widest spread.</div></div>",
-            unsafe_allow_html=True,
-        )
+        st.markdown("<div class='section-title'>Store-by-store comparison matrix</div><div class='section-subtitle'>See where the same bottle is cheapest and how wide the current spread is across stores.</div>", unsafe_allow_html=True)
         compare_show = compare.copy().sort_values(sort_by)
-        numeric_cols = [c for c in compare_show.columns if c in STORE_META or c in ["cheapest_price", "spread"]]
-        for col in numeric_cols:
-            compare_show[col] = compare_show[col].map(lambda x: f"${x:,.2f}" if pd.notna(x) else "—")
-        st.dataframe(compare_show, use_container_width=True, hide_index=True)
+        st.dataframe(
+            compare_show,
+            use_container_width=True,
+            hide_index=True,
+            column_config={
+                "rank_au": st.column_config.NumberColumn("AU rank", format="%d"),
+                "size_ml": st.column_config.NumberColumn("mL", format="%d"),
+                "Dan Murphy's": st.column_config.NumberColumn("Dan Murphy's", format="$%.2f"),
+                "BWS": st.column_config.NumberColumn("BWS", format="$%.2f"),
+                "Liquorland": st.column_config.NumberColumn("Liquorland", format="$%.2f"),
+                "First Choice": st.column_config.NumberColumn("First Choice", format="$%.2f"),
+                "cheapest_price": st.column_config.NumberColumn("Cheapest price", format="$%.2f"),
+                "spread": st.column_config.NumberColumn("Spread", format="$%.2f"),
+            },
+        )
 
         export_df = filtered[[
-            "rank_au", "whisky", "expression", "brand", "style", "store",
-            "size_ml", "price_aud", "price_per_100ml", "in_stock",
-            "product_url", "store_url", "last_seen"
+            "rank_au", "whisky", "expression", "brand", "style", "store", "size_ml", "price_aud", "price_per_100ml", "in_stock", "product_url", "store_url", "last_seen"
         ]].sort_values(["rank_au", "price_aud"])
         d1, d2 = st.columns(2)
         with d1:
             st.download_button(
-                "⬇ Download as CSV",
+                "Download filtered rows as CSV",
                 data=export_df.to_csv(index=False).encode("utf-8"),
                 file_name="boozedeals_filtered.csv",
                 mime="text/csv",
@@ -522,7 +504,7 @@ def main() -> None:
             )
         with d2:
             st.download_button(
-                "⬇ Download as Excel",
+                "Download filtered rows as Excel",
                 data=export_excel(export_df),
                 file_name="boozedeals_filtered.xlsx",
                 mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -530,45 +512,37 @@ def main() -> None:
             )
 
     with history_tab:
-        st.markdown(
-            "<div class='section-head'><div class='section-title'>Price history</div>"
-            "<div class='section-sub'>Historical trend across filtered whiskies and selected stores.</div></div>",
-            unsafe_allow_html=True,
-        )
+        st.markdown("<div class='section-title'>Price history</div><div class='section-subtitle'>Historical trend for the filtered whiskies and selected stores.</div>", unsafe_allow_html=True)
         history_join = history_df.copy()
         if not history_join.empty:
             history_join = history_join[history_join["whisky"].isin(filtered["whisky"].unique())]
             history_join = history_join[history_join["store"].isin(filtered["store"].unique())]
             line = (
                 alt.Chart(history_join)
-                .mark_line(point=True, strokeWidth=2)
+                .mark_line(point=True)
                 .encode(
-                    x=alt.X("checked_at:T", title="Date"),
+                    x=alt.X("checked_at:T", title="Checked at"),
                     y=alt.Y("price_aud:Q", title="Price (AUD)"),
-                    color=alt.Color(
-                        "store:N",
-                        scale=alt.Scale(domain=list(STORE_COLORS.keys()), range=list(STORE_COLORS.values())),
-                    ),
+                    color=alt.Color("store:N", scale=alt.Scale(domain=list(STORE_COLORS), range=list(STORE_COLORS.values()))),
                     tooltip=["whisky", "store", alt.Tooltip("price_aud:Q", format=".2f"), "checked_at:T"],
                 )
-                .properties(height=420)
-                .configure_view(strokeWidth=0, fill="#05080f")
-                .configure_axis(labelColor="#64748b", titleColor="#475569", gridColor="rgba(255,255,255,0.05)")
+                .properties(height=430)
             )
             st.altair_chart(line, use_container_width=True)
+            st.markdown("<div class='compact-note'>History is from the bundled sample dataset. Replace it with scheduled snapshots for a real price tracker.</div>", unsafe_allow_html=True)
         else:
-            st.info("No history data available. Connect a scraper to populate this view.")
+            st.info("No history CSV loaded.")
 
-    with st.expander("ℹ About BoozeDeals AU"):
-        st.markdown("""
-**BoozeDeals AU** tracks a curated list of 50 high-demand whiskies across Australia's major chain retailers:
-Dan Murphy's, BWS, Liquorland, First Choice, and **Harry Brown**.
+    with st.expander("About the watchlist and accuracy"):
+        st.markdown(
+            """
+            This app uses a curated watchlist of 50 whiskies commonly seen across major Australian retailer bestseller and popular-brand pages.
+            It is a practical comparison set for the app, not an official audited national sales ranking.
 
-**Harry Brown** is a large-format independent liquor retailer (part of the LMG network) with stores in QLD, VIC, and WA.
-They typically offer competitive pricing and a broad range comparable to Dan Murphy's.
-
-Prices are indicative and based on regular monitoring. Always verify at the retailer before purchasing.
-        """)
+            Prices in the bundled CSV are starter data. Retailer pricing can differ by postcode, member pricing, same-day delivery, or temporary promos.
+            For example, the sample file has been corrected so Glenfiddich 12YO at BWS shows **A$106** instead of the older lower sample value you spotted.
+            """
+        )
 
 
 if __name__ == "__main__":
