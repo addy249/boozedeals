@@ -1,18 +1,26 @@
-
 from __future__ import annotations
 
 from pathlib import Path
 import io
+import json
+import re
 from html import escape
+from urllib.parse import quote_plus
 
 import altair as alt
+from bs4 import BeautifulSoup
 import pandas as pd
+import requests
 import streamlit as st
+
+REQUEST_HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
+    "Accept-Language": "en-AU,en;q=0.9",
+}
 
 APP_DIR = Path(__file__).parent
 DATA_DIR = APP_DIR / "data"
 DEFAULT_CSV = DATA_DIR / "sample_whisky_prices.csv"
-LIVE_CSV = DATA_DIR / "live_prices.csv"
 HISTORY_CSV = DATA_DIR / "sample_price_history.csv"
 
 st.set_page_config(page_title="BoozeDeals AU", page_icon="🥃", layout="wide", initial_sidebar_state="collapsed")
@@ -29,6 +37,10 @@ STORE_META = {
     "BWS": {"url": "https://bws.com.au/spirits/whisky", "wordmark": "BWS", "short": "BWS"},
     "Liquorland": {"url": "https://www.liquorland.com.au/spirits/whisky", "wordmark": "Liquorland", "short": "LL"},
     "First Choice": {"url": "https://www.firstchoiceliquor.com.au/spirits/whisky", "wordmark": "First Choice", "short": "FC"},
+}
+
+DIRECT_PRODUCT_URLS = {
+    ("Glenfiddich 12YO", "BWS"): "https://bws.com.au/product/17621/glenfiddich-12-year-old-single-malt-scotch-whisky-700ml",
 }
 
 
@@ -52,7 +64,7 @@ def inject_css() -> None:
             border: 1px solid rgba(255,255,255,.08);
             box-shadow: 0 28px 80px rgba(0,0,0,.35);
             border-radius: 30px;
-            padding: 2rem;
+            padding: 2rem 2rem 1.9rem 2rem;
             color: #fff;
         }
         .eyebrow {font-size:.8rem; letter-spacing:.18em; text-transform:uppercase; color:#fbbf24; font-weight:800; margin-bottom:.8rem;}
@@ -104,7 +116,7 @@ def inject_css() -> None:
             border: 1px solid rgba(255,255,255,.08);
             border-radius: 24px;
             padding: 1.05rem;
-            min-height: 320px;
+            min-height: 290px;
             box-shadow: 0 18px 44px rgba(0,0,0,.22);
         }
         .offer-card.best {border-color: rgba(249,115,22,.52); box-shadow: 0 18px 50px rgba(249,115,22,.14);}
@@ -133,11 +145,176 @@ def inject_css() -> None:
     )
 
 
+def _norm(s: str) -> str:
+    return re.sub(r"[^a-z0-9]+", " ", str(s).lower()).strip()
+
+
+def _money_values(text: str) -> list[float]:
+    vals: list[float] = []
+    for m in re.finditer(r"\$\s*([0-9]{1,4}(?:\.[0-9]{2})?)", text):
+        try:
+            vals.append(float(m.group(1)))
+        except ValueError:
+            pass
+    return vals
+
+
+@st.cache_data(ttl=1800, show_spinner=False)
+def fetch_html(url: str) -> str:
+    if not url:
+        return ""
+    resp = requests.get(url, headers=REQUEST_HEADERS, timeout=25)
+    resp.raise_for_status()
+    return resp.text
+
+
+def build_search_url(store: str, whisky: str) -> str:
+    q = quote_plus(whisky)
+    if store == "Dan Murphy's":
+        return f"https://www.danmurphys.com.au/whisky/all?search={q}"
+    if store == "BWS":
+        return f"https://bws.com.au/spirits/whisky?search={q}"
+    if store == "Liquorland":
+        return f"https://www.liquorland.com.au/spirits/whisky?search={q}"
+    if store == "First Choice":
+        return f"https://www.firstchoiceliquor.com.au/spirits/whisky?search={q}"
+    return ""
+
+
+def json_ld_prices(soup: BeautifulSoup) -> list[float]:
+    prices: list[float] = []
+    for tag in soup.find_all("script", type="application/ld+json"):
+        raw = (tag.string or tag.get_text() or "").strip()
+        if not raw:
+            continue
+        try:
+            data = json.loads(raw)
+        except Exception:
+            continue
+        stack = [data]
+        while stack:
+            item = stack.pop()
+            if isinstance(item, dict):
+                for k, v in item.items():
+                    if k.lower() == "price":
+                        try:
+                            prices.append(float(str(v).replace(",", "")))
+                        except Exception:
+                            pass
+                    else:
+                        stack.append(v)
+            elif isinstance(item, list):
+                stack.extend(item)
+    return [p for p in prices if 20 <= p <= 2000]
+
+
+def extract_live_price(row: pd.Series, html: str) -> float | None:
+    if not html:
+        return None
+    soup = BeautifulSoup(html, "lxml")
+
+    # 1) direct metadata first
+    meta_candidates = []
+    meta_selectors = [
+        ("meta", {"property": "product:price:amount"}),
+        ("meta", {"property": "og:price:amount"}),
+        ("meta", {"itemprop": "price"}),
+        ("meta", {"name": "twitter:data1"}),
+    ]
+    for tag_name, attrs in meta_selectors:
+        for tag in soup.find_all(tag_name, attrs=attrs):
+            val = tag.get("content") or tag.get_text(" ", strip=True)
+            try:
+                p = float(str(val).replace("$", "").replace(",", "").strip())
+                if 20 <= p <= 2000:
+                    meta_candidates.append(p)
+            except Exception:
+                pass
+    if meta_candidates:
+        return meta_candidates[0]
+
+    # 2) JSON-LD prices
+    ld = json_ld_prices(soup)
+    if ld:
+        return ld[0]
+
+    # 3) site scripts with price keys
+    script_text = "
+".join(s.get_text(" ", strip=True) for s in soup.find_all("script"))
+    for pat in [r'"price"\s*:\s*"?([0-9]{1,4}(?:\.[0-9]{2})?)', r'"salePrice"\s*:\s*"?([0-9]{1,4}(?:\.[0-9]{2})?)']:
+        m = re.search(pat, script_text)
+        if m:
+            p = float(m.group(1))
+            if 20 <= p <= 2000:
+                return p
+
+    # 4) text window near the product title
+    for tag in soup(["script", "style", "noscript"]):
+        tag.extract()
+    text = soup.get_text("
+", strip=True)
+    lines = [ln.strip() for ln in text.splitlines() if ln.strip()]
+    nlines = [_norm(ln) for ln in lines]
+    tokens = [t for t in _norm(row.get("whisky", "")).split() if len(t) > 2 and t not in {"whisky", "scotch", "single", "malt", "blended", "year", "old", "yo"}]
+    expr_tokens = [t for t in _norm(row.get("expression", "")).split() if len(t) > 2 and t not in {"whisky", "scotch", "single", "malt", "blended", "year", "old", "yo"}]
+    if expr_tokens:
+        tokens.extend(expr_tokens)
+    seen = set(); tokens = [t for t in tokens if not (t in seen or seen.add(t))]
+    candidates: list[float] = []
+    for idx, ln in enumerate(nlines):
+        score = sum(t in ln for t in tokens[:6])
+        if score >= max(2, min(3, len(tokens[:6]))):
+            window = " ".join(lines[max(0, idx - 3): min(len(lines), idx + 6)])
+            vals = [v for v in _money_values(window) if 20 <= v <= 2000]
+            candidates.extend(vals[:3])
+    if candidates:
+        return candidates[0]
+
+    vals = [v for v in _money_values(text) if 20 <= v <= 2000]
+    return vals[0] if vals else None
+
+
+def resolved_product_url(row: pd.Series) -> str:
+    direct = DIRECT_PRODUCT_URLS.get((str(row.get("whisky", "")), str(row.get("store", ""))))
+    if direct:
+        return direct
+    return str(row.get("product_url") or build_search_url(str(row.get("store", "")), str(row.get("whisky", ""))))
+
+
+def refresh_live_prices(df: pd.DataFrame) -> tuple[pd.DataFrame, list[str]]:
+    refreshed = df.copy()
+    messages: list[str] = []
+    updated = 0
+    for idx, row in refreshed.iterrows():
+        url = resolved_product_url(row)
+        try:
+            html = fetch_html(url)
+            price = extract_live_price(row, html)
+            if price is None:
+                messages.append(f"No live price found for {row['whisky']} at {row['store']}")
+                continue
+            refreshed.at[idx, "price_aud"] = float(price)
+            refreshed.at[idx, "product_url"] = url
+            refreshed.at[idx, "last_seen"] = pd.Timestamp.utcnow().strftime("%Y-%m-%d %H:%M UTC")
+            refreshed.at[idx, "source"] = "live_page_refresh"
+            updated += 1
+        except Exception as e:
+            messages.append(f"Skipped {row['whisky']} at {row['store']}: {type(e).__name__}")
+    refreshed = normalize_prices(refreshed)
+    messages.insert(0, f"Updated {updated} row(s) from retailer pages.")
+    return refreshed, messages
+
+
 @st.cache_data
 def load_csv(path: Path) -> pd.DataFrame:
     if path.exists():
         return pd.read_csv(path)
     return pd.DataFrame()
+
+
+@st.cache_data
+def load_default_data() -> tuple[pd.DataFrame, pd.DataFrame]:
+    return load_csv(DEFAULT_CSV), load_csv(HISTORY_CSV)
 
 
 @st.cache_data
@@ -148,13 +325,14 @@ def export_excel(df: pd.DataFrame) -> bytes:
     return output.getvalue()
 
 
+@st.cache_data
 def normalize_prices(df: pd.DataFrame) -> pd.DataFrame:
     if df.empty:
         return df
     expected = {
         "rank_au": None, "whisky": "", "expression": "", "brand": "", "style": "", "age": "", "abv": "",
         "size_ml": 700, "store": "", "state": "AU", "price_aud": 0.0, "in_stock": True, "product_url": "",
-        "store_url": "", "last_seen": "", "source": "manual", "status": "", "popularity_group": "",
+        "store_url": "", "last_seen": "", "source": "manual", "popularity_group": "",
     }
     for col, default in expected.items():
         if col not in df.columns:
@@ -168,6 +346,7 @@ def normalize_prices(df: pd.DataFrame) -> pd.DataFrame:
     return df.dropna(subset=["price_aud", "size_ml"])
 
 
+@st.cache_data
 def prepare_history(history_df: pd.DataFrame) -> pd.DataFrame:
     if history_df.empty:
         return history_df
@@ -179,20 +358,14 @@ def prepare_history(history_df: pd.DataFrame) -> pd.DataFrame:
     return history_df.dropna(subset=["price_aud", "checked_at"])
 
 
-def load_current_data() -> tuple[pd.DataFrame, str]:
-    live_df = load_csv(LIVE_CSV)
-    if not live_df.empty:
-        return normalize_prices(live_df), "live_prices.csv"
-    fallback_df = load_csv(DEFAULT_CSV)
-    return normalize_prices(fallback_df), "sample_whisky_prices.csv"
-
-
+@st.cache_data
 def leaderboard(filtered: pd.DataFrame) -> pd.DataFrame:
     out = (filtered.sort_values(["rank_au", "price_aud"], ascending=[True, True]).groupby("whisky", as_index=False).first())
-    out = out[["rank_au", "whisky", "brand", "style", "store", "price_aud", "price_per_100ml", "product_url", "status"]]
+    out = out[["rank_au", "whisky", "brand", "style", "store", "price_aud", "price_per_100ml", "product_url"]]
     return out.rename(columns={"store": "best_store", "price_aud": "best_price", "price_per_100ml": "best_per_100ml"}).sort_values(["rank_au", "best_price"])
 
 
+@st.cache_data
 def comparison_table(filtered: pd.DataFrame) -> pd.DataFrame:
     pivot = filtered.pivot_table(index=["rank_au", "whisky", "brand", "size_ml"], columns="store", values="price_aud", aggfunc="min").reset_index()
     store_cols = [c for c in pivot.columns if c not in ["rank_au", "whisky", "brand", "size_ml"]]
@@ -212,10 +385,10 @@ def render_hero(best_row: pd.Series, tracked: int, avg_spread: float) -> None:
         <div class='hero'>
             <div class='eyebrow'>Premium whisky price tracker</div>
             <div class='hero-title'>BoozeDeals AU</div>
-            <div class='hero-copy'>Compare tracked prices across Australia's major chains, jump straight to verified product pages, and see the most recent saved scrape results without scraping live during page load.</div>
+            <div class='hero-copy'>Compare a curated watchlist of 50 high-demand whiskies across Australia's major chains, jump straight to live product pages, and spot the best value bottle in seconds.</div>
             <div class='hero-badges'>
-                <span class='badge'>Saved live-price dataset</span>
-                <span class='badge'>Verified product links</span>
+                <span class='badge'>Cleaner comparison cards</span>
+                <span class='badge'>Live retailer refresh</span>
                 <span class='badge'>Top 50 watchlist</span>
                 <span class='badge'>Store price matrix</span>
             </div>
@@ -234,16 +407,15 @@ def best_deal_card(best_row: pd.Series) -> None:
     st.markdown(
         f"""
         <div class='best-deal-card'>
-            <div class='best-deal-label'>Best saved deal</div>
+            <div class='best-deal-label'>Best deal today</div>
             <div class='best-deal-price'>${best_row['price_aud']:,.2f}</div>
             <div class='best-deal-name'>{escape(str(best_row['whisky']))}</div>
-            <div class='best-deal-copy'>Most recently saved as cheapest at {escape(str(best_row['store']))} · ${best_row['price_per_100ml']:,.2f} per 100mL · {int(best_row['size_ml'])}mL bottle.</div>
+            <div class='best-deal-copy'>Currently cheapest at {escape(str(best_row['store']))} · ${best_row['price_per_100ml']:,.2f} per 100mL · {int(best_row['size_ml'])}mL bottle.</div>
         </div>
         """,
         unsafe_allow_html=True,
     )
-    if str(best_row.get("product_url", "")).strip():
-        st.link_button("Open deal ↗", str(best_row["product_url"]), use_container_width=True)
+    st.link_button("Open deal ↗", resolved_product_url(best_row), use_container_width=True)
 
 
 def store_jump_row() -> None:
@@ -260,11 +432,10 @@ def store_jump_row() -> None:
 
 
 def store_offer_card(row: pd.Series, best_price: float) -> None:
-    link = str(row.get("product_url", "") or "")
+    link = resolved_product_url(row)
     chip_color = STORE_COLORS.get(row["store"], "#475569")
     best_class = " best" if abs(float(row["price_aud"]) - float(best_price)) < 0.001 else ""
     stock = "In stock" if bool(row["in_stock"]) else "Availability unknown"
-    status = str(row.get("status", "") or row.get("source", ""))
     st.markdown(
         f"""
         <div class='offer-card{best_class}'>
@@ -278,25 +449,27 @@ def store_offer_card(row: pd.Series, best_price: float) -> None:
                 <span class='pill'>{stock}</span>
                 <span class='pill'>{int(row['size_ml'])}mL</span>
                 <span class='pill'>Seen {escape(str(row['last_seen']))}</span>
-                <span class='pill'>{escape(status or "saved")}</span>
             </div>
             <div style='margin-top:1rem;color:#e5e7eb;font-weight:700'>{escape(str(row['whisky']))}</div>
             <div class='muted'>{escape(str(row['brand']))} • {escape(str(row['style']))}</div>
+            <a class='offer-link' href='{escape(link, quote=True)}' target='_blank'>Open store listing ↗</a>
+        </div>
         """,
         unsafe_allow_html=True,
     )
-    if link:
-        st.markdown(f"<a class='offer-link' href='{escape(link, quote=True)}' target='_blank'>Open verified product page ↗</a></div>", unsafe_allow_html=True)
-    else:
-        st.markdown("<div class='offer-link' style='color:#94a3b8'>No verified product link</div></div>", unsafe_allow_html=True)
 
 
 def main() -> None:
     inject_css()
-    current_df, current_source = load_current_data()
-    history_df = prepare_history(load_csv(HISTORY_CSV))
+    default_current, default_history = load_default_data()
+    if "current_df" not in st.session_state:
+        st.session_state.current_df = normalize_prices(default_current.copy())
+    if "history_df" not in st.session_state:
+        st.session_state.history_df = prepare_history(default_history.copy())
+    current_df = st.session_state.current_df.copy()
+    history_df = st.session_state.history_df.copy()
     if current_df.empty:
-        st.error("No price data found.")
+        st.error("No current price data found.")
         st.stop()
 
     baseline_board = leaderboard(current_df)
@@ -311,8 +484,6 @@ def main() -> None:
         best_deal_card(baseline_best_row)
 
     store_jump_row()
-
-    st.info(f"Currently showing prices from {current_source}. Update data by running scrape_prices.py locally or on GitHub Actions.")
 
     st.markdown("<div class='panel'><div class='panel-title'>Refine the comparison</div>", unsafe_allow_html=True)
     f1, f2, f3, f4, f5 = st.columns([1, 1, 1.25, 1.05, 1.15])
@@ -331,7 +502,49 @@ def main() -> None:
         rank_limit = st.slider("Top-ranked whiskies", min_value=10, max_value=max_rank, value=max_rank, step=5)
     with f5:
         search_term = st.text_input("Search", placeholder="Macallan, Glenfiddich, Nikka...")
-    st.markdown("</div>", unsafe_allow_html=True)
+
+    f6, f7, f8, f9 = st.columns([2.3, 0.95, 1, 1.2])
+    with f6:
+        focus_whisky = st.selectbox("Focus whisky", whisky_opts, index=min(8, len(whisky_opts) - 1))
+    with f7:
+        in_stock_only = st.toggle("In stock only", value=True)
+    with f8:
+        sort_by = st.selectbox("Sort matrix", ["cheapest_price", "spread", "rank_au", "whisky"])
+    with f9:
+        refresh_scope = st.selectbox("Live refresh scope", ["Focus whisky only", "Filtered rows"], index=0)
+    r1, r2 = st.columns([1.2, 4])
+    with r1:
+        do_refresh = st.button("Refresh live rates", use_container_width=True)
+    with r2:
+        st.markdown("<div class='data-note'>This uses live retailer page parsing where possible. For some bottles, direct product URLs are used to improve accuracy over search pages. Results can still vary by postcode, member pricing, stock, and temporary promos.</div></div>", unsafe_allow_html=True)
+
+    if do_refresh:
+        to_refresh = current_df.copy()
+        to_refresh = to_refresh[to_refresh["rank_au"].fillna(999) <= rank_limit]
+        if selected_style != "All":
+            to_refresh = to_refresh[to_refresh["style"] == selected_style]
+        if selected_brand != "All":
+            to_refresh = to_refresh[to_refresh["brand"] == selected_brand]
+        if selected_stores:
+            to_refresh = to_refresh[to_refresh["store"].isin(selected_stores)]
+        if search_term:
+            to_refresh = to_refresh[to_refresh["search_text"].str.contains(search_term.lower(), na=False)]
+        if in_stock_only:
+            to_refresh = to_refresh[to_refresh["in_stock"]]
+        if refresh_scope == "Focus whisky only":
+            to_refresh = to_refresh[to_refresh["whisky"] == focus_whisky]
+        with st.spinner(f"Refreshing {len(to_refresh)} row(s) from retailer pages..."):
+            refreshed_subset, live_messages = refresh_live_prices(to_refresh)
+        current_df = current_df.set_index(["whisky", "store", "size_ml"])
+        refreshed_subset = refreshed_subset.set_index(["whisky", "store", "size_ml"])
+        current_df.update(refreshed_subset)
+        current_df = normalize_prices(current_df.reset_index())
+        st.session_state.current_df = current_df.copy()
+        if live_messages:
+            st.toast(live_messages[0])
+            with st.expander("Live refresh details"):
+                for msg in live_messages[:50]:
+                    st.write("- ", msg)
 
     filtered = current_df.copy()
     filtered = filtered[filtered["rank_au"].fillna(999) <= rank_limit]
@@ -341,15 +554,18 @@ def main() -> None:
         filtered = filtered[filtered["brand"] == selected_brand]
     if selected_stores:
         filtered = filtered[filtered["store"].isin(selected_stores)]
+    if in_stock_only:
+        filtered = filtered[filtered["in_stock"]]
     if search_term:
         filtered = filtered[filtered["search_text"].str.contains(search_term.lower(), na=False)]
     if filtered.empty:
         st.warning("No rows matched the current filters.")
         st.stop()
 
-    focus_whisky = st.selectbox("Focus whisky", filtered[["rank_au", "whisky"]].drop_duplicates().sort_values(["rank_au", "whisky"])["whisky"].tolist(), index=0)
     board = leaderboard(filtered)
     compare = comparison_table(filtered)
+    if focus_whisky not in filtered["whisky"].unique():
+        focus_whisky = board["whisky"].iloc[0]
     focus_rows = filtered[filtered["whisky"] == focus_whisky].sort_values("price_aud")
     cheapest_row = filtered.sort_values("price_aud").iloc[0]
     avg_price = filtered["price_aud"].mean()
@@ -360,13 +576,13 @@ def main() -> None:
     with c1:
         metric_card("Tracked whiskies", f"{tracked}", f"Across {filtered['store'].nunique()} stores")
     with c2:
-        metric_card("Cheapest saved bottle", f"${cheapest_row['price_aud']:,.2f}", f"{cheapest_row['whisky']} at {cheapest_row['store']}")
+        metric_card("Cheapest live bottle", f"${cheapest_row['price_aud']:,.2f}", f"{cheapest_row['whisky']} at {cheapest_row['store']}")
     with c3:
         metric_card("Average shelf price", f"${avg_price:,.2f}", "Based on current filtered results")
     with c4:
         metric_card("Average store spread", f"${avg_spread:,.2f}", "Gap between lowest and highest current store price")
 
-    st.markdown("<div class='section-title' style='margin-top:1rem'>Store comparison for your focus bottle</div><div class='section-subtitle'>Saved prices, verified links, and the cheapest store highlighted.</div>", unsafe_allow_html=True)
+    st.markdown("<div class='section-title' style='margin-top:1rem'>Store comparison for your focus bottle</div><div class='section-subtitle'>Direct links, live price cards, and the cheapest store highlighted.</div>", unsafe_allow_html=True)
     offer_cols = st.columns(min(4, max(1, len(focus_rows))))
     best_focus_price = float(focus_rows["price_aud"].min())
     for col, (_, row) in zip(offer_cols, focus_rows.iterrows()):
@@ -377,22 +593,23 @@ def main() -> None:
     with tab1:
         left, right = st.columns([1.15, 0.85])
         with left:
-            st.markdown("<div class='section-title'>Top 50 leaderboard</div><div class='section-subtitle'>Best current saved store price for each whisky in the watchlist.</div>", unsafe_allow_html=True)
+            st.markdown("<div class='section-title'>Top 50 leaderboard</div><div class='section-subtitle'>Best current store price for each whisky in the watchlist.</div>", unsafe_allow_html=True)
+            show_board = board.copy()
             st.dataframe(
-                board,
+                show_board,
                 use_container_width=True,
                 hide_index=True,
-                column_order=["rank_au", "whisky", "brand", "style", "best_store", "best_price", "best_per_100ml", "product_url", "status"],
+                column_order=["rank_au", "whisky", "brand", "style", "best_store", "best_price", "best_per_100ml", "product_url"],
                 column_config={
                     "rank_au": st.column_config.NumberColumn("AU rank", format="%d"),
                     "best_store": "Cheapest store",
                     "best_price": st.column_config.NumberColumn("Best price", format="$%.2f"),
                     "best_per_100ml": st.column_config.NumberColumn("Best / 100mL", format="$%.2f"),
-                    "product_url": st.column_config.LinkColumn("Verified link", display_text="Open"),
+                    "product_url": st.column_config.LinkColumn("Store link", display_text="Open"),
                 },
             )
         with right:
-            st.markdown("<div class='section-title'>Best-price chart</div><div class='section-subtitle'>Top 20 whiskies by rank with the lowest saved shelf price shown.</div>", unsafe_allow_html=True)
+            st.markdown("<div class='section-title'>Best-price chart</div><div class='section-subtitle'>Top 20 whiskies by rank with the lowest current shelf price shown.</div>", unsafe_allow_html=True)
             chart_df = board.head(20).copy()
             chart = alt.Chart(chart_df).mark_bar(cornerRadiusTopRight=6, cornerRadiusBottomRight=6).encode(
                 x=alt.X("best_price:Q", title="Best price (AUD)"),
@@ -404,8 +621,9 @@ def main() -> None:
 
     with tab2:
         st.markdown("<div class='section-title'>Store-by-store comparison matrix</div><div class='section-subtitle'>See where the same bottle is cheapest and how wide the current spread is across stores.</div>", unsafe_allow_html=True)
+        compare_show = compare.copy().sort_values(sort_by)
         st.dataframe(
-            compare,
+            compare_show,
             use_container_width=True,
             hide_index=True,
             column_config={
@@ -419,7 +637,7 @@ def main() -> None:
                 "spread": st.column_config.NumberColumn("Spread", format="$%.2f"),
             },
         )
-        export_df = filtered[["rank_au", "whisky", "expression", "brand", "style", "store", "size_ml", "price_aud", "price_per_100ml", "in_stock", "product_url", "last_seen", "status"]].sort_values(["rank_au", "price_aud"])
+        export_df = filtered[["rank_au", "whisky", "expression", "brand", "style", "store", "size_ml", "price_aud", "price_per_100ml", "in_stock", "product_url", "store_url", "last_seen"]].sort_values(["rank_au", "price_aud"])
         d1, d2 = st.columns(2)
         with d1:
             st.download_button("Download filtered rows as CSV", data=export_df.to_csv(index=False).encode("utf-8"), file_name="boozedeals_filtered.csv", mime="text/csv", use_container_width=True)
@@ -428,8 +646,8 @@ def main() -> None:
 
     with tab3:
         st.markdown("<div class='section-title'>Price history</div><div class='section-subtitle'>Historical trend for the filtered whiskies and selected stores.</div>", unsafe_allow_html=True)
-        if not history_df.empty:
-            history_join = history_df.copy()
+        history_join = history_df.copy()
+        if not history_join.empty:
             history_join = history_join[history_join["whisky"].isin(filtered["whisky"].unique())]
             history_join = history_join[history_join["store"].isin(filtered["store"].unique())]
             line = alt.Chart(history_join).mark_line(point=True).encode(
@@ -442,6 +660,13 @@ def main() -> None:
             st.caption("History uses the bundled sample dataset until you replace it with scheduled snapshots.")
         else:
             st.info("No history CSV loaded.")
+
+    with st.expander("About live-rate accuracy"):
+        st.markdown("""
+        Live refresh is best-effort. Where a direct product URL is known, the app uses that page first because it is usually more accurate than retailer search pages.
+
+        I also corrected the bundled starter data issue you spotted: Glenfiddich 12YO at BWS is set to **A$106** and this build includes a direct BWS product URL override for that bottle.
+        """)
 
 
 if __name__ == "__main__":
